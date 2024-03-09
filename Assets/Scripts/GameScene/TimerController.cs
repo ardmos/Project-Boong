@@ -18,7 +18,7 @@ public class TimerController : MonoBehaviour
 
     public event EventHandler OnPhase1TimeEnded;
 
-    private void Start()
+    private void Awake()
     {
         InitTimer();    
     }
@@ -45,9 +45,11 @@ public class TimerController : MonoBehaviour
     /// </summary>
     private void InitTimer()
     {
+        Debug.Log($"{nameof(InitTimer)}");
         totalPassedTime = 0f;
         isTimerOn = false;
         isOnPhase1TimeEndedInvoked = false;
+        txtTimer.text = "00 : 00";
     }
 
     /// <summary>
@@ -55,6 +57,7 @@ public class TimerController : MonoBehaviour
     /// </summary>
     public void StartTimer()
     {
+        Debug.Log($"{nameof(StartTimer)}");
         isTimerOn = true;
     }
 }

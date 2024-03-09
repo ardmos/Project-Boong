@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     {
         timerController.OnPhase1TimeEnded += TimerController_OnPhase1TimeEnded;
 
+        Debug.Log($"{nameof(Start)} Game Manager");
         timerController.StartTimer();
     }
 
