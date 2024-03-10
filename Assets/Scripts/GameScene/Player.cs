@@ -39,16 +39,19 @@ public class Player : MonoBehaviour
     private PlayerData playerData;
     private Coroutine staminaRecoveryCoroutine;
 
-
-    void Start()
+    private void Awake()
     {
-        // Init Player Data
         Instance = this;
+        // Init Player Data
         playerData = new PlayerData(DEFAULT_MOVESPEED, DEFAULT_STAMINA_MAX);
+    }
+
+    private void Start()
+    {
         SetPlayerState(PlayerState.Idle);
     }
 
-    void Update()
+    private void Update()
     {
         
     }
@@ -96,7 +99,6 @@ public class Player : MonoBehaviour
         else playerData.stamina += DEFAULT_STAMINA_RECOVERY_AMOUNT;
 
         staminaUIController.SetUI(GetStamina());
-        Debug.Log("!");
     }
     public void SetPlayerState(PlayerState state)
     {
