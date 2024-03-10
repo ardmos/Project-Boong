@@ -15,8 +15,16 @@ public class GameInput : MonoBehaviour
         playerControls = new PlayerControls();
         playerControls.GamePlayGamePad.Enable();
 
+        // Add Callbacks 
         playerControls.GamePlayGamePad.Move.started += Move_started;
         playerControls.GamePlayGamePad.Move.canceled += Move_canceled;
+    }
+
+    private void OnDestroy()
+    {
+        // Unregister Callbacks
+        playerControls.GamePlayGamePad.Move.started -= Move_started;
+        playerControls.GamePlayGamePad.Move.canceled -= Move_canceled;
     }
 
     private void Move_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)

@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     public static Player Instance { get; private set; }
 
     public event EventHandler OnExitPointReached;
+    public event EventHandler OnCaughtByPuppy;
     public StaminaUIController staminaUIController;
     public PlayerState playerState;
 
@@ -62,6 +63,11 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Exit Point"))
         {
             OnExitPointReached.Invoke(this, new EventArgs());
+        }
+
+        if (collision.CompareTag("Puppy"))
+        {
+            OnCaughtByPuppy.Invoke(this, new EventArgs());
         }
     }
 
