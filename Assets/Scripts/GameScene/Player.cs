@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 
     public StaminaUIController staminaUIController;
 
-    public PlayerState state;
+    public PlayerState playerState;
 
     private PlayerData playerData;
     private Coroutine staminaRecoveryCoroutine;
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
 
     private void PlayerStateMachine()
     {
-        switch (state)
+        switch (playerState)
         {
             case PlayerState.Idle:
                 break;
@@ -100,9 +100,9 @@ public class Player : MonoBehaviour
 
         staminaUIController.SetUI(GetStamina());
     }
-    public void SetPlayerState(PlayerState state)
+    public void SetPlayerState(PlayerState playerState)
     {
-        this.state = state;
+        this.playerState = playerState;
 
         PlayerStateMachine();
     }

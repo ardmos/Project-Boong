@@ -11,12 +11,14 @@ using UnityEngine;
 public class TimerController : MonoBehaviour
 {
     [SerializeField] private bool isTimerOn;
-    [SerializeField] private bool isOnPhase1TimeEndedInvoked;
+    [SerializeField] private bool isPhase1TimeEnded;
+    [SerializeField] private bool isPhase2TimeEnded;
     [SerializeField] private TextMeshProUGUI txtTimer;
     [SerializeField] private float totalPassedTime;
     int h, m, s;
 
-    public event EventHandler OnPhase1TimeEnded;
+    public event EventHandler Phase1TimeEnded;
+    public event EventHandler Phase2TimeEnded;
 
     private void Awake()
     {
@@ -26,10 +28,15 @@ public class TimerController : MonoBehaviour
     void Update()
     {
         if (!isTimerOn) return;
-        if (m >= GameManager.Instance.GetPhase1EndTime() && !isOnPhase1TimeEndedInvoked)
+        if (m >= GameManager.PHASE1_DURATION && !isPhase1TimeEnded)
         {
-            OnPhase1TimeEnded.Invoke(this, EventArgs.Empty);
-            isOnPhase1TimeEndedInvoked = true;
+            Phase1TimeEnded.Invoke(this, EventArgs.Empty);
+            isPhase1TimeEnded = true;
+        }
+        if (m >= GameManager.PHASE2_DURATION && !isPhase2TimeEnded)
+        {
+            Phase2TimeEnded.Invoke(this, EventArgs.Empty);
+            isPhase2TimeEnded = true;
         }
 
         totalPassedTime += Time.deltaTime;
@@ -48,7 +55,7 @@ public class TimerController : MonoBehaviour
         Debug.Log($"{nameof(InitTimer)}");
         totalPassedTime = 0f;
         isTimerOn = false;
-        isOnPhase1TimeEndedInvoked = false;
+        isPhase1TimeEnded = false;
         txtTimer.text = "00 : 00";
     }
 
@@ -59,5 +66,11 @@ public class TimerController : MonoBehaviour
     {
         Debug.Log($"{nameof(StartTimer)}");
         isTimerOn = true;
+    }
+
+    public void StopTimer()
+    {
+        Debug.Log($"{nameof(StopTimer)}");
+        isTimerOn = false;
     }
 }
