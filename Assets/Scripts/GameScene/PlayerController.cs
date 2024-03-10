@@ -12,13 +12,34 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moveSpeed = 10f;
+        moveSpeed = 100f;
+
+        // Add Callbacks 
+        gameInput.OnMoveStarted += GameInput_OnMoveStarted;
+        gameInput.OnMoveEnded += GameInput_OnMoveEnded;
+    }
+
+    private void OnDestroy()
+    {
+        // Unregister Callbacks
+        gameInput.OnMoveStarted -= GameInput_OnMoveStarted;
+        gameInput.OnMoveEnded -= GameInput_OnMoveEnded;
+    }
+
+    private void GameInput_OnMoveEnded(object sender, System.EventArgs e)
+    {
+        HandleMovement();
+    }
+
+    private void GameInput_OnMoveStarted(object sender, System.EventArgs e)
+    {
+        HandleMovement();
     }
 
     // Update is called once per frame
     void Update()
     {
-        HandleMovement();
+       
     }
 
     protected void HandleMovement()

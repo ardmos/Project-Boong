@@ -7,15 +7,26 @@ public class GameInput : MonoBehaviour
 {
     private PlayerControls playerControls;
 
-    public event EventHandler OnDownClicked;
-    public event EventHandler OnUpClicked;
-    public event EventHandler OnLeftClicked;
-    public event EventHandler OnRightClicked;
+    public event EventHandler OnMoveStarted;
+    public event EventHandler OnMoveEnded;
 
     private void Awake()
     {
         playerControls = new PlayerControls();
-        playerControls.GamePlayGamePad.Enable();   
+        playerControls.GamePlayGamePad.Enable();
+
+        playerControls.GamePlayGamePad.Move.started += Move_started;
+        playerControls.GamePlayGamePad.Move.canceled += Move_canceled;
+    }
+
+    private void Move_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnMoveEnded.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Move_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnMoveStarted.Invoke(this, EventArgs.Empty);
     }
 
     public Vector2 GetMovementVectorNormalized()
@@ -23,6 +34,8 @@ public class GameInput : MonoBehaviour
         Vector2 inputVector = playerControls.GamePlayGamePad.Move.ReadValue<Vector2>();
 
         inputVector = inputVector.normalized;
+
+        //Debug.Log(inputVector);
 
         return inputVector;
     }
