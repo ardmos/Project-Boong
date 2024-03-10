@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,7 @@ public enum PlayerState
 public class Player : MonoBehaviour
 {
     public const float DEFAULT_STAMINA_MAX = 100f;
-    public const float DEFAULT_MOVESPEED = 100f;
+    public const float DEFAULT_MOVESPEED = 500f;
     public const float DEFAULT_STAMINA_CONSUMPTION = 10f;
     public const float DEFAULT_STAMINA_RECOVERY_AMOUNT = 20f;
     public const float DEFAULT_STAMINA_RECOVERY_INTERVAL = 1f;
@@ -32,8 +33,8 @@ public class Player : MonoBehaviour
     
     public static Player Instance { get; private set; }
 
+    public event EventHandler OnExitPointReached;
     public StaminaUIController staminaUIController;
-
     public PlayerState playerState;
 
     private PlayerData playerData;
@@ -54,6 +55,14 @@ public class Player : MonoBehaviour
     private void Update()
     {
         
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Exit Point"))
+        {
+            OnExitPointReached.Invoke(this, new EventArgs());
+        }
     }
 
     private void PlayerStateMachine()

@@ -31,12 +31,18 @@ public class GameManager : MonoBehaviour
     {
         timerController.Phase1TimeEnded += TimerController_Phase1TimeEnded;
         timerController.Phase2TimeEnded += TimerController_Phase2TimeEnded;
+        Player.Instance.OnExitPointReached += Player_OnExitPointReached;
 
         Debug.Log($"{nameof(Start)} Game Manager");
         SetGameState(GameState.Ready);
 
         // 원래 시작컷씬 재생 후 Phase1 시작 해야하는데 지금은 시작컷씬이 없어서 바로 시작합니다. 
         SetGameState(GameState.Phase1);
+    }
+
+    private void Player_OnExitPointReached(object sender, System.EventArgs e)
+    {
+        SetGameState(GameState.Win);
     }
 
     private void TimerController_Phase2TimeEnded(object sender, System.EventArgs e)
@@ -102,7 +108,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 2페이즈 시작. 
     /// </summary>
-    public void StartPhase2()
+    private void StartPhase2()
     {
        
     }
