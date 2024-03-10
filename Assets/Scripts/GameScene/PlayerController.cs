@@ -38,6 +38,9 @@ public class PlayerController : MonoBehaviour
 
     protected void HandleMovement()
     {
+        // 스태미너 잔여량 부족시 이동하지 않음
+        if (Player.Instance.GetStamina() < Player.DEFAULT_STAMINA_CONSUMPTION) return;
+
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, inputVector.y, transform.position.z);
         float moveDistance = moveSpeed * Time.deltaTime;
