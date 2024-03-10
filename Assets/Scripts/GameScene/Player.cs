@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     public const float DEFAULT_STAMINA_MAX = 100f;
     public const float DEFAULT_MOVESPEED = 100f;
     public const float DEFAULT_STAMINA_CONSUMPTION = 10f;
-    public const float DEFAULT_STAMINA_RECOVERY_AMOUNT = 5f;
+    public const float DEFAULT_STAMINA_RECOVERY_AMOUNT = 20f;
     public const float DEFAULT_STAMINA_RECOVERY_INTERVAL = 1f;
     public const float DEFAULT_RESTING_TIME_REQUIRED = 1f;
     
