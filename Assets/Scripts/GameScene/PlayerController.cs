@@ -9,10 +9,9 @@ public class PlayerController : MonoBehaviour
 
     private float moveSpeed;
 
-    // Start is called before the first frame update
     void Start()
     {
-        moveSpeed = 100f;
+        moveSpeed = Player.Instance.GetMoveSpeed();
 
         // Add Callbacks 
         gameInput.OnMoveStarted += GameInput_OnMoveStarted;
@@ -28,18 +27,13 @@ public class PlayerController : MonoBehaviour
 
     private void GameInput_OnMoveEnded(object sender, System.EventArgs e)
     {
-        HandleMovement();
+        // 시간이 지남에 따른 휴식 state로의 변경
+        StartCoroutine(ChangePlayerStateToRestingOverTime());
     }
 
     private void GameInput_OnMoveStarted(object sender, System.EventArgs e)
     {
         HandleMovement();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-       
     }
 
     protected void HandleMovement()
@@ -49,6 +43,10 @@ public class PlayerController : MonoBehaviour
         float moveDistance = moveSpeed * Time.deltaTime;
         transform.position += moveDir * moveDistance;
 
+        // 이동시마다 스태미너 감소 
+        Player.Instance.ReduceStamina();
+        // Player state 변경
+        Player.Instance.SetPlayerState(PlayerState.Moving);
 
         //isWalking = moveDir != Vector3.zero;
         // 진행방향 바라볼 때
@@ -56,5 +54,14 @@ public class PlayerController : MonoBehaviour
         // 마우스 커서 방향 바라볼 때
         //Vector3 mouseDir = GetMouseDir();
         //Rotate(mouseDir);
+    }
+
+    private IEnumerator ChangePlayerStateToRestingOverTime()
+    {
+        // 기본 Player state 
+        Player.Instance.SetPlayerState(PlayerState.Idle);
+        yield return new WaitForSeconds(Player.DEFAULT_RESTING_TIME_REQUIRED);
+        // 휴식 상태
+        Player.Instance.SetPlayerState(PlayerState.Resting);
     }
 }
