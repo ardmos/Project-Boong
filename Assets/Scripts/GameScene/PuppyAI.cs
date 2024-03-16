@@ -62,14 +62,6 @@ public class PuppyAI : MonoBehaviour
         PuppyStateMachine();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // State가 Patrol일때만 Door를 열도록 하기 위함
-        if (currentState != State.Patrol) return;
-
-        OpenDoor(collision.GetComponent<DoorController>());
-    }
-
     private void PuppyStateMachine()
     {
         switch (currentState)

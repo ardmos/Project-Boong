@@ -13,6 +13,11 @@ public class NavMeshManager : MonoBehaviour
         Surface2D = GetComponent<NavMeshSurface>();
     }
 
+    private void Start()
+    {
+        Surface2D.BuildNavMeshAsync();
+    }
+
     private void OnDestroy()
     {
         Instance = null;
