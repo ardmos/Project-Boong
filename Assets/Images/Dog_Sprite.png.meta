@@ -254,33 +254,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dog_Sprite_5
-      rect:
-        serializedVersion: 2
-        x: 30
-        y: 120
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 187cbac1252a47f4ba04106838cf69ff
-      internalID: -482517989
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Dog_Sprite_6
       rect:
         serializedVersion: 2
-        x: 50
+        x: 28
         y: 70
-        width: 260
+        width: 283
         height: 160
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -299,9 +278,9 @@ TextureImporter:
       name: Dog_Sprite_7
       rect:
         serializedVersion: 2
-        x: 350
+        x: 339
         y: 70
-        width: 310
+        width: 322
         height: 150
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -312,48 +291,6 @@ TextureImporter:
       bones: []
       spriteID: c265a78aa4a3c634e80f30037d9916d7
       internalID: 1086073447
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dog_Sprite_8
-      rect:
-        serializedVersion: 2
-        x: 340
-        y: 100
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2b778b22e0648a04db4244c38686d445
-      internalID: 268459805
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dog_Sprite_9
-      rect:
-        serializedVersion: 2
-        x: 40
-        y: 90
-        width: 10
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 59ceb6bbe4081e04c8b0438c8741f84c
-      internalID: -1433754965
       vertices: []
       indices: 
       edges: []

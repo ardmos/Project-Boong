@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class GameManager : MonoBehaviour
     public const float PHASE2_DURATION = PHASE1_DURATION + 2f;
 
     public static GameManager Instance { get; private set; }
+
+    public event EventHandler OnGameEnd;
 
     public TimerController timerController;
     public GameState gameState;
@@ -128,11 +131,13 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Game Over !");
         timerController.StopTimer();
+        OnGameEnd.Invoke(this, EventArgs.Empty);
     }
 
     private void Win()
     {
         Debug.Log("Win !");
         timerController.StopTimer();
+        OnGameEnd.Invoke(this, EventArgs.Empty);
     }
 }
