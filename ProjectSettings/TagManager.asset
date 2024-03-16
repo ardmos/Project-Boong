@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Exit Point
   - Puppy
+  - Door
   layers:
   - Default
   - TransparentFX

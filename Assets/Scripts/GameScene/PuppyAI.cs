@@ -141,9 +141,4 @@ public class PuppyAI : MonoBehaviour
 
         animator.SetBool(animation.ToString(), true);
     }
-
-    private void OpenDoor(DoorController doorController) 
-    {
-        doorController.Open();
-    }
 }

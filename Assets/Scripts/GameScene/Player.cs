@@ -68,6 +68,11 @@ public class Player : MonoBehaviour
         {
             OnCaughtByPuppy.Invoke(this, new EventArgs());
         }
+
+        if (collision.CompareTag("Door"))
+        {
+            OpenDoor(collision.GetComponent<DoorController>());
+        }
     }
 
     private void PlayerStateMachine()
@@ -85,6 +90,11 @@ public class Player : MonoBehaviour
                 StartStaminaRecoveryCoroutine();
                 break;
         }
+    }
+
+    private void OpenDoor(DoorController doorController)
+    {
+        doorController.Open();
     }
 
     public float GetMoveSpeed()
