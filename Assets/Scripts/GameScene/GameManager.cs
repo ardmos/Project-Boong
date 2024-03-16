@@ -45,6 +45,26 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.Phase1);
     }
 
+    private void OnDisable()
+    {
+        // Unregister Callbacks
+        timerController.Phase1TimeEnded -= TimerController_Phase1TimeEnded;
+        timerController.Phase2TimeEnded -= TimerController_Phase2TimeEnded;
+
+        if (Player.Instance == null)
+        {
+            Debug.Log("OnDisable(): Player.Instance is null");
+            return;
+        }
+        Player.Instance.OnExitPointReached -= Player_OnExitPointReached;
+        Player.Instance.OnCaughtByPuppy -= Player_OnCaughtByPuppy;
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
+
     private void Player_OnCaughtByPuppy(object sender, System.EventArgs e)
     {
         SetGameState(GameState.GameOver);
@@ -63,15 +83,6 @@ public class GameManager : MonoBehaviour
     private void TimerController_Phase1TimeEnded(object sender, System.EventArgs e)
     {
         SetGameState(GameState.Phase2);
-    }
-
-    private void OnDestroy()
-    {
-        // Unregister Callbacks
-        timerController.Phase1TimeEnded -= TimerController_Phase1TimeEnded;
-        timerController.Phase2TimeEnded -= TimerController_Phase2TimeEnded;
-        Player.Instance.OnExitPointReached -= Player_OnExitPointReached;
-        Player.Instance.OnCaughtByPuppy -= Player_OnCaughtByPuppy;
     }
 
     private void GameStateMachine()

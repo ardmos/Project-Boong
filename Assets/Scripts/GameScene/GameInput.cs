@@ -20,7 +20,7 @@ public class GameInput : MonoBehaviour
         playerControls.GamePlayGamePad.Move.canceled += Move_canceled;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         // Unregister Callbacks
         playerControls.GamePlayGamePad.Move.started -= Move_started;

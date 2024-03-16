@@ -53,9 +53,9 @@ public class Player : MonoBehaviour
         SetPlayerState(PlayerState.Idle);
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        
+        Instance = null;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

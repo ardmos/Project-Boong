@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
         gameInput.OnMoveEnded += GameInput_OnMoveEnded;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         // Unregister Callbacks
         gameInput.OnMoveStarted -= GameInput_OnMoveStarted;

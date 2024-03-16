@@ -46,6 +46,9 @@ TagManager:
   - name: Patrol Point
     uniqueID: 2186934007
     locked: 0
+  - name: Door
+    uniqueID: 2875692267
+    locked: 0
   - name: Puppy
     uniqueID: 224885905
     locked: 0
