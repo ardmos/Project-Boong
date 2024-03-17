@@ -153,7 +153,8 @@ public class PuppyAI : MonoBehaviour
         {
             Debug.Log("patrol point reached! looking for next patrol point");
             // Move to the next patrol point
-            currentPatrolIndex = (currentPatrolIndex + 1) % availablePatrolPoints.Count;
+            //currentPatrolIndex = (currentPatrolIndex + 1) % availablePatrolPoints.Count;
+            currentPatrolIndex = Random.Range(0, availablePatrolPoints.Count);
         }
 
         // Check if the player is within chase distance
