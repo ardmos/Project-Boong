@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         // 이동할 위치 계산
         Vector3 newPosition = transform.position + moveDir * moveDistance;
 
-        Debug.Log($"{transform.position}, {moveDir}, {moveDistance}");
+        //Debug.Log($"{transform.position}, {moveDir}, {moveDistance}");
 
         // 충돌 여부 확인
         int playerLayer = 9;

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
+    public DoorNames doorName;
     public Sprite doorOpen;
     public Vector3 openedDoorPosition;
     public bool isDoorOpen;
@@ -29,5 +30,7 @@ public class DoorController : MonoBehaviour
         // 4. NavMesh rebake
         GetComponent<NavMeshModifier>().area = 0;
         NavMeshManager.Instance.ReBake();
+        // 5. DoorManager에게 문 열림 보고
+        DoorManager.Instance.OnDoorOpened(doorName);
     }
 }
