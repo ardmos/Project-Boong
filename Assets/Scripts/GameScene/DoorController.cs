@@ -6,6 +6,7 @@ public class DoorController : MonoBehaviour
     public Sprite doorOpen;
     public Vector3 openedDoorPosition;
     public bool isDoorOpen;
+    public ShadowController shadowController;
 
     private SpriteRenderer spriteRenderer;
 
@@ -23,6 +24,8 @@ public class DoorController : MonoBehaviour
         transform.localPosition = openedDoorPosition;
         // 2. 이미지 변경
         spriteRenderer.sprite = doorOpen;
+        // 3. 이 문이 가리고 있던 지역 Shadow 비활성화
+        shadowController.DisableShadow();
         // 4. NavMesh rebake
         GetComponent<NavMeshModifier>().area = 0;
         NavMeshManager.Instance.ReBake();
