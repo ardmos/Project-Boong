@@ -60,3 +60,6 @@ TagManager:
   - name: Player
     uniqueID: 1150694977
     locked: 0
+  - name: Dark Area
+    uniqueID: 1548757167
+    locked: 0
