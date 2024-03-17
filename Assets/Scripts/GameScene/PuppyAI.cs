@@ -37,8 +37,7 @@ public class PuppyAI : MonoBehaviour
 
         animator = GetComponentInChildren<Animator>();
 
-        // 테스트를 위한 처리.
-        //currentState = State.Patrol;
+        currentState = State.Patrol;
 
         GameManager.Instance.OnGameEnd += OnGameEnd;
     }
