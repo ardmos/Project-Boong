@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -42,7 +43,26 @@ public class PlayerController : MonoBehaviour
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, inputVector.y, transform.position.z);
         float moveDistance = moveSpeed * Time.deltaTime;
-        transform.position += moveDir * moveDistance;
+
+        // 이동할 위치 계산
+        Vector3 newPosition = transform.position + moveDir * moveDistance;
+
+        Debug.Log($"{transform.position}, {moveDir}, {moveDistance}");
+
+        // 충돌 여부 확인
+        int playerLayer = 9;
+        int layerMask = ~(1 << playerLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + moveDir, moveDir, moveDistance, layerMask);
+        
+        if (hit.collider != null && hit.collider.CompareTag("Wall"))
+        {
+            Debug.Log($"{hit.collider.tag}");
+            // 벽에 닿으면 이동하지 않음
+            return;
+        }
+
+        // 이동
+        transform.position = newPosition;
 
         // 이동시마다 스태미너 감소 
         Player.Instance.ReduceStamina();
