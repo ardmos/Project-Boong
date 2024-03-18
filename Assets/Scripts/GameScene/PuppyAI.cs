@@ -52,12 +52,16 @@ public class PuppyAI : MonoBehaviour
 
         currentState = State.Patrol;
 
-        GameManager.Instance.OnGameEnd += OnGameEnd;
         DoorManager.Instance.OnKitchenDoorOpen += OnKitchenDoorOpen;
         DoorManager.Instance.OnBedRoomDoorOpen += OnBedRoomDoorOpen;
         DoorManager.Instance.OnBathRoomDoorOpen += OnBathRoomDoorOpen;
         DoorManager.Instance.OnWorkoutRoomDoorOpen += OnWorkoutRoomDoorOpen;
         DoorManager.Instance.OnGarageDoorOpen += OnGarageDoorOpen;
+    }
+
+    private void OnGameOverTimeout(object sender, System.EventArgs e)
+    {
+        throw new System.NotImplementedException();
     }
 
     private void OnGarageDoorOpen(object sender, System.EventArgs e)
@@ -87,13 +91,6 @@ public class PuppyAI : MonoBehaviour
 
     private void OnDisable()
     {
-        if (GameManager.Instance == null)
-        {
-            Debug.Log("OnDisable(): GameManager.Instance is null");
-            return;
-        }
-        GameManager.Instance.OnGameEnd -= OnGameEnd;
-
         if (DoorManager.Instance == null)
         {
             Debug.Log("OnDisable(): DoorManager.Instance is null");
@@ -104,11 +101,6 @@ public class PuppyAI : MonoBehaviour
         DoorManager.Instance.OnBathRoomDoorOpen -= OnBathRoomDoorOpen;
         DoorManager.Instance.OnWorkoutRoomDoorOpen -= OnWorkoutRoomDoorOpen;
         DoorManager.Instance.OnGarageDoorOpen -= OnGarageDoorOpen;
-    }
-
-    private void OnGameEnd(object sender, System.EventArgs e)
-    {
-        currentState = State.Idle;
     }
 
     private void Update()

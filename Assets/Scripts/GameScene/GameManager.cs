@@ -4,9 +4,10 @@ using UnityEngine;
 public enum GameState
 {
     Ready,
-    Phase1,
-    Phase2,
-    GameOver,
+    Phase_1,
+    Phase_2,
+    GameOver_Timeout,
+    GameOver_ByPuppy,
     Win
 }
 
@@ -17,7 +18,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
-    public event EventHandler OnGameEnd;
+    public event EventHandler OnGameOverTimeout;
+    public event EventHandler OnGameOverByPuppy;
+    public event EventHandler OnGameWin;
 
     public TimerController timerController;
     public GameState gameState;
@@ -40,7 +43,7 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.Ready);
 
         // 원래 시작컷씬 재생 후 Phase1 시작 해야하는데 지금은 시작컷씬이 없어서 바로 시작합니다. 
-        SetGameState(GameState.Phase1);
+        SetGameState(GameState.Phase_1);
     }
 
     private void OnDisable()
@@ -65,7 +68,7 @@ public class GameManager : MonoBehaviour
 
     private void Player_OnCaughtByPuppy(object sender, System.EventArgs e)
     {
-        SetGameState(GameState.GameOver);
+        SetGameState(GameState.GameOver_ByPuppy);
     }
 
     private void Player_OnExitPointReached(object sender, System.EventArgs e)
@@ -75,12 +78,12 @@ public class GameManager : MonoBehaviour
 
     private void TimerController_Phase2TimeEnded(object sender, System.EventArgs e)
     {
-        SetGameState(GameState.GameOver);
+        SetGameState(GameState.GameOver_Timeout);
     }
 
     private void TimerController_Phase1TimeEnded(object sender, System.EventArgs e)
     {
-        SetGameState(GameState.Phase2);
+        SetGameState(GameState.Phase_2);
     }
 
     private void GameStateMachine()
@@ -89,14 +92,17 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Ready:
                 break;
-            case GameState.Phase1:
+            case GameState.Phase_1:
                 StartPhase1();
                 break;
-            case GameState.Phase2:
+            case GameState.Phase_2:
                 StartPhase2();
                 break;
-            case GameState.GameOver:
-                GameOver();
+            case GameState.GameOver_Timeout:
+                GameOverTimeout();
+                break;
+            case GameState.GameOver_ByPuppy:
+                GameOverByPuppy();
                 break;
             case GameState.Win:
                 Win();
@@ -136,17 +142,24 @@ public class GameManager : MonoBehaviour
        
     }
 
-    private void GameOver()
+    private void GameOverTimeout()
     {
-        Debug.Log("Game Over !");
+        Debug.Log("Game Over! Timeout!");
         timerController.StopTimer();
-        OnGameEnd.Invoke(this, EventArgs.Empty);
+        OnGameOverTimeout.Invoke(this, EventArgs.Empty);
+    }
+
+    private void GameOverByPuppy()
+    {
+        Debug.Log("Game Over! By Puppy!");
+        timerController.StopTimer();
+        OnGameOverByPuppy.Invoke(this, EventArgs.Empty);
     }
 
     private void Win()
     {
         Debug.Log("Win !");
         timerController.StopTimer();
-        OnGameEnd.Invoke(this, EventArgs.Empty);
+        OnGameWin.Invoke(this, EventArgs.Empty);
     }
 }
