@@ -12,7 +12,10 @@ public class GameInput : MonoBehaviour
     {
         playerControls = new PlayerControls();
         playerControls.GamePlayGamePad.Enable();
+    }
 
+    private void Start()
+    {
         // Add Callbacks 
         playerControls.GamePlayGamePad.Move.started += Move_started;
         playerControls.GamePlayGamePad.Move.canceled += Move_canceled;

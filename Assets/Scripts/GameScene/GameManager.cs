@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum GameState
 {
-    Ready,
+    Intro,
     Phase_1,
     Phase_2,
     GameOver_Timeout,
@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
+    public event EventHandler OnPhase_1;
     public event EventHandler OnGameOverTimeout;
     public event EventHandler OnGameOverByPuppy;
     public event EventHandler OnGameWin;
@@ -31,19 +32,17 @@ public class GameManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+        Debug.Log($"Game Manager Start");
+
         // Add Callbacks
         timerController.Phase1TimeEnded += TimerController_Phase1TimeEnded;
         timerController.Phase2TimeEnded += TimerController_Phase2TimeEnded;
         Player.Instance.OnExitPointReached += Player_OnExitPointReached;
         Player.Instance.OnCaughtByPuppy += Player_OnCaughtByPuppy;
 
-        Debug.Log($"{nameof(Start)} Game Manager");
-        SetGameState(GameState.Ready);
-
-        // 원래 시작컷씬 재생 후 Phase1 시작 해야하는데 지금은 시작컷씬이 없어서 바로 시작합니다. 
-        SetGameState(GameState.Phase_1);
+        SetGameState(GameState.Intro);
     }
 
     private void OnDisable()
@@ -90,7 +89,8 @@ public class GameManager : MonoBehaviour
     {
         switch (gameState)
         {
-            case GameState.Ready:
+            case GameState.Intro:
+                Intro();
                 break;
             case GameState.Phase_1:
                 StartPhase1();
@@ -117,12 +117,13 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Ready State 시작. 시작 컷신이 재생되어야 합니다. 
+    /// Intro State 시작. 시작 컷신이 재생되어야 합니다. 
     /// 재생이 완료되면 다음 State로 넘겨줍니다.
     /// </summary>
-    private void Ready()
+    private void Intro()
     {
-
+        Debug.Log("Intro!");
+        CutSceneManager.Instance.ShowIntro();   
     }
 
     /// <summary>
@@ -130,8 +131,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void StartPhase1()
     {
+        Debug.Log("Phase 1!");
         timerController.StartTimer();
-       
     }
 
     /// <summary>
@@ -139,7 +140,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void StartPhase2()
     {
-       
+        Debug.Log("Phase 2!");
     }
 
     private void GameOverTimeout()

@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Player Awake()");
         Instance = this;
         // Init Player Data
         playerData = new PlayerData(DEFAULT_MOVESPEED, DEFAULT_STAMINA_MAX);

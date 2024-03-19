@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 
     private float moveSpeed;
 
-    void Start()
+    private void Start()
     {
         moveSpeed = Player.Instance.GetMoveSpeed();
 

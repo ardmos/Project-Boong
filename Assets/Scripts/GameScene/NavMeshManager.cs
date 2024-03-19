@@ -15,6 +15,7 @@ public class NavMeshManager : MonoBehaviour
 
     private void Start()
     {
+        // 게임 시작시 한 번 베이크
         Surface2D.BuildNavMeshAsync();
     }
 
