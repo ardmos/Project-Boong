@@ -66,3 +66,6 @@ TagManager:
   - name: Dark Area
     uniqueID: 1548757167
     locked: 0
+  - name: VFX
+    uniqueID: 993918243
+    locked: 0

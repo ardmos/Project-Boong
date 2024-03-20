@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,15 +7,19 @@ public class PlayerController : MonoBehaviour
 {
     public GameInput gameInput;
 
+    private bool isControllable;
     private float moveSpeed;
+    private Coroutine moveCoroutine;
 
     private void Start()
     {
-        moveSpeed = Player.Instance.GetMoveSpeed();
-
         // Add Callbacks 
         gameInput.OnMoveStarted += GameInput_OnMoveStarted;
         gameInput.OnMoveEnded += GameInput_OnMoveEnded;
+
+        moveSpeed = Player.Instance.GetMoveSpeed();
+        SetControllable(true);
+        //gameObject.SetActive(false);
     }
 
     private void OnDisable()
@@ -32,11 +37,15 @@ public class PlayerController : MonoBehaviour
 
     private void GameInput_OnMoveStarted(object sender, System.EventArgs e)
     {
+        //Debug.Log("GameInput_OnMoveStarted");
+        
         HandleMovement();
     }
 
-    protected void HandleMovement()
+    private void HandleMovement()
     {
+        if (!isControllable) return;
+
         // 스태미너 잔여량 부족시 이동하지 않음
         if (Player.Instance.GetStamina() < Player.DEFAULT_STAMINA_CONSUMPTION) return;
 
@@ -62,8 +71,14 @@ public class PlayerController : MonoBehaviour
         }
 
         // 이동
-        transform.position = newPosition;
-
+        //transform.position = newPosition;
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+        moveCoroutine = StartCoroutine(MoveSmoothly(newPosition));
+        // 이동 애니메이션 실행
+        GetComponentInChildren<PlayerAnimationController>().StartJumpAnimation();
         // 이동시마다 스태미너 감소 
         Player.Instance.ReduceStamina();
         // Player state 변경
@@ -77,6 +92,11 @@ public class PlayerController : MonoBehaviour
         //Rotate(mouseDir);
     }
 
+    public void SetControllable(bool controllable)
+    {
+        isControllable = controllable;
+    }
+
     private IEnumerator ChangePlayerStateToRestingOverTime()
     {
         // 기본 Player state 
@@ -84,5 +104,24 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(Player.DEFAULT_RESTING_TIME_REQUIRED);
         // 휴식 상태
         Player.Instance.SetPlayerState(PlayerState.Resting);
+    }
+
+    private IEnumerator MoveSmoothly(Vector3 tartgetPosition)
+    {
+        Vector3 startPos = transform.position;
+        Vector3 endPos = tartgetPosition;
+        float elapsedTime = 0f;
+
+        yield return new WaitForSeconds(1/6f);
+
+        while (elapsedTime < 1f)
+        {
+            transform.position = Vector3.Lerp(startPos, endPos, elapsedTime);
+            elapsedTime += Time.deltaTime * 2f;
+            //Debug.Log(elapsedTime);
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        transform.position = endPos; // 이동 완료 후 위치 보정
     }
 }

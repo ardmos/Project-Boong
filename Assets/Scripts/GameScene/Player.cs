@@ -49,11 +49,6 @@ public class Player : MonoBehaviour
         playerData = new PlayerData(DEFAULT_MOVESPEED, DEFAULT_STAMINA_MAX);
     }
 
-    private void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void PlayerStart()
     {
         gameObject.SetActive(true);
@@ -138,6 +133,11 @@ public class Player : MonoBehaviour
         this.playerState = playerState;
 
         PlayerStateMachine();
+    }
+
+    public void DisableMovement()
+    {
+        GetComponent<PlayerController>().SetControllable(false);
     }
 
     private IEnumerator StaminaRecoveryTimer()

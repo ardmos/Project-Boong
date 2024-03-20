@@ -9,7 +9,10 @@ public enum CutSceneState
     Intro_Step3,
     Intro_Step4,
     Intro_Step5,
-    Timeout,
+    Timeout_Step1,
+    Timeout_Step2,
+    Timeout_Step3,
+    Timeout_Step4,
     CaughtByPuppy,
     Win_Step1,
     Win_Step2
@@ -50,7 +53,7 @@ public class CutSceneManager : MonoBehaviour
 
     private void OnGameOverTimeout(object sender, System.EventArgs e)
     {
-        cutSceneTimeout.ShowCutScene();
+        SetCutSceneState(CutSceneState.Timeout_Step1);
     }
 
     private void OnDisable()
@@ -77,7 +80,8 @@ public class CutSceneManager : MonoBehaviour
                 break;
             case CutSceneState.Intro_Step2:
                 // "여긴... 어디지...?" 다이얼로그 노출
-                DialogManager.Instance.ShowDialog("여긴... 어디지...?", () => {
+                DialogManager.Instance.ShowDialog("여긴... 어디지...?", () =>
+                {
                     cutSceneIntro.HideCutScene();
                     StartCoroutine(WaitAndStartIntroStep3());
                 });
@@ -88,7 +92,7 @@ public class CutSceneManager : MonoBehaviour
                 humanController.Show();
                 humanController.MoveToMovePointsIntroStep3(() =>
                 {
-                   StartCoroutine(WaitAndStartIntroStep4());
+                    StartCoroutine(WaitAndStartIntroStep4());
                 });
                 break;
             case CutSceneState.Intro_Step4:
@@ -107,7 +111,29 @@ public class CutSceneManager : MonoBehaviour
                     GameManager.Instance.SetGameState(GameState.Phase_1);
                 });
                 break;
-            case CutSceneState.Timeout:
+            case CutSceneState.Timeout_Step1:
+                // 플레이어 이동 정지
+                Player.Instance.DisableMovement();
+                StartCoroutine(WaitAndStartTimeoutStep2());
+                break;
+            case CutSceneState.Timeout_Step2:
+                // "앗! 벌써 돌아오다니!!" 다이얼로그 노출 및 현관에 사람 돌아옴
+                DialogManager.Instance.ShowDialog("앗! 벌써 돌아오다니!!", () =>
+                {
+                    StartCoroutine(WaitAndStartTimeoutStep3());
+                });
+                break;
+            case CutSceneState.Timeout_Step3:
+                // 사람 약간 이동. 
+                humanController.MoveToMovePointsGameOver(() =>
+                {
+                    StartCoroutine(WaitAndStartTimeoutStep4());
+                });
+                break;
+            case CutSceneState.Timeout_Step4:
+                // 컷씬 재생, 컷씬UI 버튼 활성화
+                cutSceneTimeout.ShowCutScene();
+                cutSceneTimeout.ActivateButtons();
                 break;
             case CutSceneState.CaughtByPuppy:
                 break;
@@ -160,5 +186,23 @@ public class CutSceneManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         humanController.Hide();
         SetCutSceneState(CutSceneState.Intro_Step5);
+    }
+
+    private IEnumerator WaitAndStartTimeoutStep2()
+    {
+        yield return new WaitForSeconds(1f);
+        SetCutSceneState(CutSceneState.Timeout_Step2);
+    }
+    private IEnumerator WaitAndStartTimeoutStep3()
+    {
+        yield return new WaitForSeconds(1f);
+        humanController.Show();
+        yield return new WaitForSeconds(1f);
+        SetCutSceneState(CutSceneState.Timeout_Step3);
+    }
+    private IEnumerator WaitAndStartTimeoutStep4()
+    {
+        yield return new WaitForSeconds(1f);
+        SetCutSceneState(CutSceneState.Timeout_Step4);
     }
 }

@@ -57,12 +57,6 @@ public class CutSceneController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// ???
-    /// 
-    ///아직 호출 안됨.  이 컨트롤러 코드 전체적으로 미확정.  수정 필요
-    /// 
-    /// </summary>
     public void ActivateButtons()
     {
         StartCoroutine(ActivateButtonWithAnimation());
@@ -73,19 +67,22 @@ public class CutSceneController : MonoBehaviour
         switch (type)
         {
             case CutSceneType.Intro:
-                buttonStart.gameObject.SetActive(true);    
+                //buttonStart.gameObject.SetActive(true);    
                 break;
             case CutSceneType.GameOverTimeout:
+                yield return new WaitForSeconds(1f);
                 buttonRestart.gameObject.SetActive(true);
                 yield return new WaitForSeconds(1f);
                 buttonGiveUp.gameObject.SetActive(true);
                 break;
             case CutSceneType.GameOverByPuppy:
+                yield return new WaitForSeconds(1f);
                 buttonRestart.gameObject.SetActive(true);
                 yield return new WaitForSeconds(1f);
                 buttonGiveUp.gameObject.SetActive(true);
                 break;
             case CutSceneType.Win:
+                yield return new WaitForSeconds(1f);
                 buttonHome.gameObject.SetActive(true);
                 break;
         }
