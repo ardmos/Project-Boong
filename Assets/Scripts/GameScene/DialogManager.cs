@@ -15,23 +15,14 @@ public class DialogManager : MonoBehaviour
         Instance = this;
     }
 
-    // 문자열을 출력하는 메소드
+    /// <summary>
+    /// 다이얼로그를 실행시키는 메서드 입니다. 다이얼로그가 닫힐 때 실행시킬 콜백 함수를 지정해줄 수 있습니다.
+    /// 실행시킬 콜백 함수가 없는 경우, callBack 파라미터 값을 null로 설정해주면 됩니다. 
+    /// </summary>
     public void ShowDialog(string message, UnityAction callBack)
     {
         DialogController dialog = Instantiate(dialogPrefab, dialogParent).GetComponent<DialogController>();
         dialog.SetCallback(callBack);
-        dialog.SetMessage(message);
-    }
-
-    public void ShowDialog(string message, float seconds)
-    {
-        StartCoroutine(WaitAndSetMessage(message, seconds));
-    }
-
-    private IEnumerator WaitAndSetMessage(string message, float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        DialogController dialog = Instantiate(dialogPrefab, dialogParent).GetComponent<DialogController>();
         dialog.SetMessage(message);
     }
 }

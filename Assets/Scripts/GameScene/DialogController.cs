@@ -16,9 +16,7 @@ public class DialogController : MonoBehaviour
     {
         UnityAction newCallback = () =>
         {
-            if (callback == null) return;
-
-            callback();
+            callback?.Invoke();
             Destroy(gameObject);
         };
 

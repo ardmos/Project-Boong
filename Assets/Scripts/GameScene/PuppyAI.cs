@@ -138,14 +138,13 @@ public class PuppyAI : MonoBehaviour
         agent.speed = patrolSpeed;
         // Move towards the current patrol point
         MovePuppy(availablePatrolPoints[currentPatrolIndex].position);
-        Debug.Log($"currentPatrolIndex: {currentPatrolIndex}, availablePatrolPoints.Count: {availablePatrolPoints.Count}, next patrol point name: {availablePatrolPoints[currentPatrolIndex].name}");
+        //Debug.Log($"currentPatrolIndex: {currentPatrolIndex}, availablePatrolPoints.Count: {availablePatrolPoints.Count}, next patrol point name: {availablePatrolPoints[currentPatrolIndex].name}");
 
         // Check if reached the patrol point
         if (Vector3.Distance(transform.position, availablePatrolPoints[currentPatrolIndex].position) < 0.1f)
         {
-            Debug.Log("patrol point reached! looking for next patrol point");
-            // Move to the next patrol point
-            //currentPatrolIndex = (currentPatrolIndex + 1) % availablePatrolPoints.Count;
+            //Debug.Log("patrol point reached! looking for next patrol point");
+            // Move to the next patrol point            
             currentPatrolIndex = Random.Range(0, availablePatrolPoints.Count);
         }
 

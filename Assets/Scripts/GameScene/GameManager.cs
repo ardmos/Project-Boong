@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SetGameState(GameState gameState)
+    public void SetGameState(GameState gameState)
     {
         this.gameState = gameState;
         GameStateMachine();

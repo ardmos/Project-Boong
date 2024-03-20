@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     public event EventHandler OnCaughtByPuppy;
     public StaminaUIController staminaUIController;
     public PlayerState playerState;
+    public Transform playerStartPoint; 
 
     private PlayerData playerData;
     private Coroutine staminaRecoveryCoroutine;
@@ -50,6 +51,13 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        gameObject.SetActive(false);
+    }
+
+    public void PlayerStart()
+    {
+        gameObject.SetActive(true);
+        transform.position = playerStartPoint.position;
         SetPlayerState(PlayerState.Idle);
     }
 

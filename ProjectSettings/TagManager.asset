@@ -57,6 +57,9 @@ TagManager:
   - name: Puppy
     uniqueID: 224885905
     locked: 0
+  - name: Human
+    uniqueID: 3131203049
+    locked: 0
   - name: Player
     uniqueID: 1150694977
     locked: 0
