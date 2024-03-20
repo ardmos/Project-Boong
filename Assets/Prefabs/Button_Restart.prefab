@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 7261919292642341425}
   - component: {fileID: 7261919292642341426}
   m_Layer: 0
-  m_Name: Btn_MenuButton_Rectangle03_Common_Orange
+  m_Name: Button_Restart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

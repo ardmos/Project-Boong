@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case GameState.Intro:
-                Intro();
+                StartCutScene();
                 break;
             case GameState.Phase_1:
                 StartPhase1();
@@ -120,10 +120,10 @@ public class GameManager : MonoBehaviour
     /// Intro State 시작. 시작 컷신이 재생되어야 합니다. 
     /// 재생이 완료되면 다음 State로 넘겨줍니다.
     /// </summary>
-    private void Intro()
+    private void StartCutScene()
     {
-        Debug.Log("Intro!");
-        CutSceneManager.Instance.ShowIntro();   
+        Debug.Log("ShowCutScene!");
+        CutSceneManager.Instance.StartCutScene();   
     }
 
     /// <summary>

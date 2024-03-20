@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DialogManager : MonoBehaviour
 {
@@ -15,9 +16,10 @@ public class DialogManager : MonoBehaviour
     }
 
     // 문자열을 출력하는 메소드
-    public void ShowDialog(string message)
+    public void ShowDialog(string message, UnityAction callBack)
     {
         DialogController dialog = Instantiate(dialogPrefab, dialogParent).GetComponent<DialogController>();
+        dialog.SetCallback(callBack);
         dialog.SetMessage(message);
     }
 
