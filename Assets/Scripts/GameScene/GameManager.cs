@@ -127,12 +127,13 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 1페이즈 시작
+    /// 1페이즈 시작. 강아지 움직이기(순찰) 시작!
     /// </summary>
     private void StartPhase1()
     {
         Debug.Log("Phase 1!");
         timerController.StartTimer();
+        PuppyAI.Instance.SetPuppyState(PuppyState.Patrol);
     }
 
     /// <summary>

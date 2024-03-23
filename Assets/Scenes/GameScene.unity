@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerController: {fileID: 550663565}
   gameState: 0
+  puppyAI: {fileID: 219550359}
 --- !u!4 &10314221
 Transform:
   m_ObjectHideFlags: 0

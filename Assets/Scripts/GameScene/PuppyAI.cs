@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum State
+public enum PuppyState
 {
     Idle,
     Patrol,
@@ -18,7 +18,9 @@ public enum CharacterAnimations
 
 public class PuppyAI : MonoBehaviour
 {
-    public State currentState;
+    public static PuppyAI Instance { get; private set; }
+
+    public PuppyState currentState;
 
     // 동적으로 업데이트될 현재 접근 가능한 포인트들. 새로운 방 문이 열릴 때마다 영역이 추가됩니다.
     public List<Transform> availablePatrolPoints;
@@ -39,6 +41,11 @@ public class PuppyAI : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Animator animator;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -48,9 +55,7 @@ public class PuppyAI : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
 
         availablePatrolPoints = new List<Transform>();
-        availablePatrolPoints.AddRange(patrolPointsLivingRoom);
-
-        currentState = State.Patrol;
+        availablePatrolPoints.AddRange(patrolPointsLivingRoom);      
 
         DoorManager.Instance.OnKitchenDoorOpen += OnKitchenDoorOpen;
         DoorManager.Instance.OnBedRoomDoorOpen += OnBedRoomDoorOpen;
@@ -112,13 +117,13 @@ public class PuppyAI : MonoBehaviour
     {
         switch (currentState)
         {
-            case State.Idle:
+            case PuppyState.Idle:
                 Idle();
                 break;
-            case State.Patrol:
+            case PuppyState.Patrol:
                 Patrol();
                 break;
-            case State.Chase:
+            case PuppyState.Chase:
                 Chase();
                 break;
         }
@@ -151,7 +156,7 @@ public class PuppyAI : MonoBehaviour
         // Check if the player is within chase distance
         if (Vector3.Distance(transform.position, player.position) < chaseDistance)
         {
-            currentState = State.Chase;
+            SetPuppyState(PuppyState.Chase);
         }
     }
 
@@ -167,7 +172,7 @@ public class PuppyAI : MonoBehaviour
         // Check if the player is out of chase distance
         if (Vector3.Distance(transform.position, player.position) > chaseDistance)
         {
-            currentState = State.Patrol;
+            SetPuppyState(PuppyState.Patrol);
         }
     }
 
@@ -186,5 +191,10 @@ public class PuppyAI : MonoBehaviour
         }
 
         animator.SetBool(animation.ToString(), true);
+    }
+
+    public void SetPuppyState(PuppyState state)
+    {
+        currentState = state;
     }
 }
