@@ -15,31 +15,28 @@ public enum CutSceneType
 public class CutSceneController : MonoBehaviour
 {
     public CutSceneType type;
-    public Button buttonStart;
     public Button buttonRestart;
     public Button buttonGiveUp;
     public Button buttonHome;
 
     private void Start()
     {
-        buttonStart.gameObject.SetActive(false);
         buttonRestart.gameObject.SetActive(false);
         buttonGiveUp.gameObject.SetActive(false);
         buttonHome.gameObject.SetActive(false);
-        buttonStart.onClick.AddListener(OnStartGame);
         buttonRestart.onClick.AddListener(OnRestartGame);
         buttonGiveUp.onClick.AddListener(OnGoHome);
         buttonHome.onClick.AddListener(OnGoHome);
     }
 
-    private void OnStartGame()
-    {
-        gameObject.SetActive(false);
-    }
-
     private void OnRestartGame()
     {
         gameObject.SetActive(false);
+        // 게임 재시작. 
+        // 1. Game State
+        // 2. CutScene State
+        // 3. Puppy State 
+        // ...!
     }
 
     private void OnGoHome()
