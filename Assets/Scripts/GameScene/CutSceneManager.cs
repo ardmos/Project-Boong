@@ -48,7 +48,7 @@ public class CutSceneManager : MonoBehaviour
 
     private void OnGameOverByPuppy(object sender, System.EventArgs e)
     {
-        cutSceneCaughtByPuppy.ShowCutScene();
+        
     }
 
     private void OnGameOverTimeout(object sender, System.EventArgs e)
@@ -136,6 +136,8 @@ public class CutSceneManager : MonoBehaviour
                 cutSceneTimeout.ActivateButtons();
                 break;
             case CutSceneState.CaughtByPuppy:
+                cutSceneCaughtByPuppy.ShowCutScene();
+                cutSceneCaughtByPuppy.ActivateButtons();
                 break;
             case CutSceneState.Win_Step1:
                 break;
