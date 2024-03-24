@@ -14,8 +14,7 @@ public enum CutSceneState
     Timeout_Step3,
     Timeout_Step4,
     CaughtByPuppy,
-    Win_Step1,
-    Win_Step2
+    Win
 }
 
 public class CutSceneManager : MonoBehaviour
@@ -43,12 +42,12 @@ public class CutSceneManager : MonoBehaviour
 
     private void OnGameWin(object sender, System.EventArgs e)
     {
-        cutSceneWin.ShowCutScene();
+        SetCutSceneState(CutSceneState.Win);
     }
 
     private void OnGameOverByPuppy(object sender, System.EventArgs e)
     {
-        
+        SetCutSceneState(CutSceneState.CaughtByPuppy);
     }
 
     private void OnGameOverTimeout(object sender, System.EventArgs e)
@@ -139,9 +138,8 @@ public class CutSceneManager : MonoBehaviour
                 cutSceneCaughtByPuppy.ShowCutScene();
                 cutSceneCaughtByPuppy.ActivateButtons();
                 break;
-            case CutSceneState.Win_Step1:
-                break;
-            case CutSceneState.Win_Step2:
+            case CutSceneState.Win:
+                cutSceneWin.ShowCutScene();
                 break;
             default:
                 break;
