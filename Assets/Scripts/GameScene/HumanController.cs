@@ -15,8 +15,10 @@ public class HumanController : MonoBehaviour
     public Transform[] movePointsIntroStep3;
     public Transform[] movePointsIntroStep4;
     public Transform[] movePointsGameOver;
+    public Transform startPosition;
 
     private UnityAction onAllMovementsComplete;
+    private Coroutine moveCoroutine;
 
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Animator animator;
@@ -33,6 +35,7 @@ public class HumanController : MonoBehaviour
     private void MoveHuman(Vector3 targetPos)
     {
         Debug.Log($"targetPos:{targetPos}");
+        agent.isStopped = false;
         agent.SetDestination(targetPos);
     }
 
@@ -46,22 +49,33 @@ public class HumanController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void ResetHuman()
+    {
+        if (moveCoroutine == null) return;
+        if (!agent.isActiveAndEnabled) return;
+
+        StopCoroutine(moveCoroutine);
+        agent.isStopped = true;
+        transform.position = startPosition.position;
+        SetAnimation(HumanAnimations.Idle);
+    }
+
     public void MoveToMovePointsIntroStep3(UnityAction onComplete)
     {
         onAllMovementsComplete = onComplete;
-        StartCoroutine(MoveToPointSequentially(movePointsIntroStep3));
+        moveCoroutine = StartCoroutine(MoveToPointSequentially(movePointsIntroStep3));
     }
 
     public void MoveToMovePointsIntroStep4(UnityAction onComplete)
     {
         onAllMovementsComplete = onComplete;
-        StartCoroutine(MoveToPointSequentially(movePointsIntroStep4));
+        moveCoroutine = StartCoroutine(MoveToPointSequentially(movePointsIntroStep4));
     }
 
     public void MoveToMovePointsGameOver(UnityAction onComplete)
     {
         onAllMovementsComplete = onComplete;
-        StartCoroutine(MoveToPointSequentially(movePointsGameOver));
+        moveCoroutine = StartCoroutine(MoveToPointSequentially(movePointsGameOver));
     }
 
     private void SetAnimation(HumanAnimations animation)
@@ -77,8 +91,8 @@ public class HumanController : MonoBehaviour
     {
         foreach (Transform point in movePoints)
         {
-            //MoveHuman(point.position);
-            agent.SetDestination(point.position);
+            MoveHuman(point.position);
+            //agent.SetDestination(point.position);
             SetAnimation(HumanAnimations.Walking);
             // agent가 목적지를 계산하고 이동을 시작하기까지 잠시 기다려줍니다. 이 과정을 거치지 않으면 remainingDistance 계산이 올바로 되지 않습니다. 
             yield return new WaitForSeconds(1f);

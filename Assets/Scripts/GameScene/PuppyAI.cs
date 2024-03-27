@@ -32,6 +32,8 @@ public class PuppyAI : MonoBehaviour
     public Transform[] patrolPointsWorkoutRoom;
     public Transform[] patrolPointsGarage;
 
+    public Transform startPosition;
+
     public float chaseSpeed = 10f;
     public float patrolSpeed = 3f;
     public Transform player;
@@ -44,10 +46,7 @@ public class PuppyAI : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
 
-    private void Start()
-    {
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -55,8 +54,11 @@ public class PuppyAI : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
 
         availablePatrolPoints = new List<Transform>();
-        availablePatrolPoints.AddRange(patrolPointsLivingRoom);      
+        availablePatrolPoints.AddRange(patrolPointsLivingRoom);
+    }
 
+    private void Start()
+    {
         DoorManager.Instance.OnKitchenDoorOpen += OnKitchenDoorOpen;
         DoorManager.Instance.OnBedRoomDoorOpen += OnBedRoomDoorOpen;
         DoorManager.Instance.OnBathRoomDoorOpen += OnBathRoomDoorOpen;
@@ -178,6 +180,7 @@ public class PuppyAI : MonoBehaviour
 
     private void MovePuppy(Vector3 targetPos)
     {
+        agent.isStopped = false;
         agent.SetDestination(targetPos);
     }
 
@@ -196,5 +199,14 @@ public class PuppyAI : MonoBehaviour
     public void SetPuppyState(PuppyState state)
     {
         currentState = state;
+    }
+
+    public void ResetPuppy()
+    {
+        if (!agent.isActiveAndEnabled) return;
+
+        agent.isStopped = true;
+        transform.position = startPosition.position;
+        SetPuppyState(PuppyState.Idle);
     }
 }

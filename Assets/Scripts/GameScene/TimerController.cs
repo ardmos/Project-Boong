@@ -20,7 +20,7 @@ public class TimerController : MonoBehaviour
 
     private void Awake()
     {
-        InitTimer();    
+        ResetTimer();    
     }
 
     void Update()
@@ -48,9 +48,9 @@ public class TimerController : MonoBehaviour
     /// <summary>
     /// Timer 초기화 ( Start() 에서 호출됩니다 ) 
     /// </summary>
-    private void InitTimer()
+    public void ResetTimer()
     {
-        Debug.Log($"{nameof(InitTimer)}");
+        Debug.Log($"{nameof(ResetTimer)}");
         totalPassedTime = 0f;
         isTimerOn = false;
         isPhase1TimeEnded = false;

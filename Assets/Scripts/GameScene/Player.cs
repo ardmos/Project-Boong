@@ -49,9 +49,14 @@ public class Player : MonoBehaviour
         playerData = new PlayerData(DEFAULT_MOVESPEED, DEFAULT_STAMINA_MAX);
     }
 
-    public void PlayerStart()
+    public void ActivatePlayer()
     {
-        gameObject.SetActive(true);
+        GetComponentInChildren<SpriteRenderer>().enabled = true;
+    }
+
+    public void ResetPlayer()
+    {
+        GetComponentInChildren<SpriteRenderer>().enabled = false;
         transform.position = playerStartPoint.position;
         SetPlayerState(PlayerState.Idle);
     }

@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public event EventHandler OnGameWin;
 
     public TimerController timerController;
+    public HumanController humanController;
     public GameState gameState;
 
     private void Awake()
@@ -91,6 +92,10 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Intro:
                 StartCutScene();
+                RestTimer();
+                ResetPuppy();
+                ResetHuman();
+                ResetPlayer();
                 break;
             case GameState.Phase_1:
                 StartPhase1();
@@ -123,7 +128,27 @@ public class GameManager : MonoBehaviour
     private void StartCutScene()
     {
         Debug.Log("ShowCutScene!");
-        CutSceneManager.Instance.StartCutScene();   
+        CutSceneManager.Instance.StartIntroCutScene();   
+    }
+
+    private void RestTimer()
+    {
+        timerController.ResetTimer();
+    }
+
+    private void ResetPuppy()
+    {
+        PuppyAI.Instance.ResetPuppy();
+    }
+
+    private void ResetHuman()
+    {
+        humanController.ResetHuman();
+    }
+
+    private void ResetPlayer()
+    {
+        Player.Instance.ResetPlayer();
     }
 
     /// <summary>

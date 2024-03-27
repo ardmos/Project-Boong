@@ -31,12 +31,12 @@ public class CutSceneController : MonoBehaviour
 
     private void OnRestartGame()
     {
+        buttonRestart.gameObject.SetActive(false);
+        buttonGiveUp.gameObject.SetActive(false);
+        buttonHome.gameObject.SetActive(false);
         gameObject.SetActive(false);
         // 게임 재시작. 
-        // 1. Game State
-        // 2. CutScene State
-        // 3. Puppy State 
-        // ...!
+        GameManager.Instance.SetGameState(GameState.Intro);
     }
 
     private void OnGoHome()

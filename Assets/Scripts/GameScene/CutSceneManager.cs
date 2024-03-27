@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum CutSceneState
@@ -156,7 +155,7 @@ public class CutSceneManager : MonoBehaviour
     /// <summary>
     /// ÄÆ¾À ½ÃÀÛ!
     /// </summary>
-    public void StartCutScene()
+    public void StartIntroCutScene()
     {
         SetCutSceneState(CutSceneState.Intro_Step1);
     }
@@ -177,7 +176,7 @@ public class CutSceneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         // Å×ÀÌºí¿¡ ºØ¾î»§(Player) »ý¼º
-        Player.Instance.PlayerStart();
+        Player.Instance.ActivatePlayer();
         SetCutSceneState(CutSceneState.Intro_Step4);
     }
 
