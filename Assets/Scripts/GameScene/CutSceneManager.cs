@@ -69,6 +69,8 @@ public class CutSceneManager : MonoBehaviour
 
     private void CutSceneStateMachine()
     {
+        UIManager.Instance.HideAllUI();
+
         switch (state)
         {
             case CutSceneState.Intro_Step1:
@@ -107,6 +109,7 @@ public class CutSceneManager : MonoBehaviour
                 DialogManager.Instance.ShowDialog("이때다! 빨리 나가야겠어!", () =>
                 {
                     GameManager.Instance.SetGameState(GameState.Phase_1);
+                    UIManager.Instance.ShowAllUI();
                 });
                 break;
             case CutSceneState.Timeout_Step1:
@@ -141,6 +144,7 @@ public class CutSceneManager : MonoBehaviour
                 cutSceneWin.ShowCutScene();
                 break;
             default:
+                UIManager.Instance.ShowAllUI();
                 break;
         }
     }
