@@ -3783,7 +3783,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1283353750}
-  - component: {fileID: 1283353751}
+  - component: {fileID: 1283353756}
   - component: {fileID: 1283353752}
   - component: {fileID: 1283353753}
   - component: {fileID: 1283353754}
@@ -3812,18 +3812,6 @@ Transform:
   - {fileID: 1625320198}
   m_Father: {fileID: 968872896}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1283353751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1283353749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a05ec8a853b2f24ca97522c4d9ba2c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1283353752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3836,7 +3824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79350b534f257b54abb424fd4d0f8373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameInput: {fileID: 1283353751}
+  gameInput: {fileID: 1283353756}
 --- !u!114 &1283353753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3850,6 +3838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   staminaUIController: {fileID: 1812488446}
+  gameInput: {fileID: 1283353756}
   playerState: 0
   playerStartPoint: {fileID: 383466056}
 --- !u!61 &1283353754
@@ -3924,6 +3913,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1283353756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283353749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a05ec8a853b2f24ca97522c4d9ba2c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1318394788
 GameObject:
   m_ObjectHideFlags: 0

@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     public event EventHandler OnExitPointReached;
     public event EventHandler OnCaughtByPuppy;
     public StaminaUIController staminaUIController;
+    public GameInput gameInput;
     public PlayerState playerState;
     public Transform playerStartPoint; 
 
@@ -142,16 +143,7 @@ public class Player : MonoBehaviour
 
     public void DisableMovement()
     {
-        GetComponent<PlayerController>().SetControllable(false);
-    }
-
-    private IEnumerator StaminaRecoveryTimer()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(DEFAULT_STAMINA_RECOVERY_INTERVAL);
-            RecoverStamina();
-        }
+        gameInput.SetControllable(false);
     }
 
     private void StartStaminaRecoveryCoroutine()
@@ -167,5 +159,14 @@ public class Player : MonoBehaviour
 
         StopCoroutine(staminaRecoveryCoroutine);
         staminaRecoveryCoroutine = null;
+    }
+
+    private IEnumerator StaminaRecoveryTimer()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(DEFAULT_STAMINA_RECOVERY_INTERVAL);
+            RecoverStamina();
+        }
     }
 }

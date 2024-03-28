@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameInput : MonoBehaviour
 {
     private PlayerControls playerControls;
+    private bool isControllable;
 
     public event EventHandler OnMoveStarted;
     public event EventHandler OnMoveEnded;
@@ -16,6 +17,8 @@ public class GameInput : MonoBehaviour
 
     private void Start()
     {
+        SetControllable(true);
+
         // Add Callbacks 
         playerControls.GamePlayGamePad.Move.started += Move_started;
         playerControls.GamePlayGamePad.Move.canceled += Move_canceled;
@@ -35,6 +38,7 @@ public class GameInput : MonoBehaviour
 
     private void Move_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        if (!isControllable) return;
         OnMoveStarted.Invoke(this, EventArgs.Empty);
     }
 
@@ -47,5 +51,10 @@ public class GameInput : MonoBehaviour
         //Debug.Log(inputVector);
 
         return inputVector;
+    }
+
+    public void SetControllable(bool isControllable)
+    {
+        this.isControllable = isControllable;
     }
 }

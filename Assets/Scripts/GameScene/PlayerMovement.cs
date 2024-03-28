@@ -3,13 +3,12 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    public GameInput gameInput;
-
-    private bool isControllable;
     private float moveSpeed;
     private Coroutine moveCoroutine;
+
+    public GameInput gameInput;
 
     private void Start()
     {
@@ -18,8 +17,6 @@ public class PlayerController : MonoBehaviour
         gameInput.OnMoveEnded += GameInput_OnMoveEnded;
 
         moveSpeed = Player.Instance.GetMoveSpeed();
-        SetControllable(true);
-        //gameObject.SetActive(false);
     }
 
     private void OnDisable()
@@ -37,15 +34,11 @@ public class PlayerController : MonoBehaviour
 
     private void GameInput_OnMoveStarted(object sender, System.EventArgs e)
     {
-        //Debug.Log("GameInput_OnMoveStarted");
-        
         HandleMovement();
     }
 
     private void HandleMovement()
     {
-        if (!isControllable) return;
-
         // 스태미너 잔여량 부족시 이동하지 않음
         if (Player.Instance.GetStamina() < Player.DEFAULT_STAMINA_CONSUMPTION) return;
 
@@ -55,8 +48,6 @@ public class PlayerController : MonoBehaviour
 
         // 이동할 위치 계산
         Vector3 newPosition = transform.position + moveDir * moveDistance;
-
-        //Debug.Log($"{transform.position}, {moveDir}, {moveDistance}");
 
         // 충돌 여부 확인
         int playerLayer = 9;
@@ -71,7 +62,6 @@ public class PlayerController : MonoBehaviour
         }
 
         // 이동
-        //transform.position = newPosition;
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
@@ -84,17 +74,11 @@ public class PlayerController : MonoBehaviour
         // Player state 변경
         Player.Instance.SetPlayerState(PlayerState.Moving);
 
-        //isWalking = moveDir != Vector3.zero;
         // 진행방향 바라볼 때
         //Rotate(moveDir);
         // 마우스 커서 방향 바라볼 때
         //Vector3 mouseDir = GetMouseDir();
         //Rotate(mouseDir);
-    }
-
-    public void SetControllable(bool controllable)
-    {
-        isControllable = controllable;
     }
 
     private IEnumerator ChangePlayerStateToRestingOverTime()
@@ -118,7 +102,6 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = Vector3.Lerp(startPos, endPos, elapsedTime);
             elapsedTime += Time.deltaTime * 2f;
-            //Debug.Log(elapsedTime);
             yield return null; // 다음 프레임까지 대기
         }
 
