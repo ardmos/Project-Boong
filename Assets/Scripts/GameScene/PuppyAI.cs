@@ -206,7 +206,9 @@ public class PuppyAI : MonoBehaviour
         if (!agent.isActiveAndEnabled) return;
 
         agent.isStopped = true;
+        GetComponent<NavMeshAgent>().enabled = false;
         transform.position = startPosition.position;
+        GetComponent<NavMeshAgent>().enabled = true;
         SetPuppyState(PuppyState.Idle);
     }
 }
