@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        ShowAllUI();
+        HideAllUI();
     }
 
     public void HideAllUI()
