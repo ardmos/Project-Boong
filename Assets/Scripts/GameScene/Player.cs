@@ -34,14 +34,15 @@ public class Player : MonoBehaviour
 
     public event EventHandler OnExitPointReached;
     public event EventHandler OnCaughtByPuppy;
-
-    public GameInput gameInput;
+    
     public Transform playerStartPoint; 
 
     private PlayerData playerData;
     private PlayerState playerState;
     private PlayerMovementSystem playerMovementSystem;
     private PlayerStaminaSystem playerStaminaSystem;
+    private GameInput gameInput;
+    private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
@@ -49,7 +50,9 @@ public class Player : MonoBehaviour
         Instance = this;
 
         playerMovementSystem = GetComponent<PlayerMovementSystem>();
-        playerStaminaSystem = GetComponent<PlayerStaminaSystem>();  
+        playerStaminaSystem = GetComponent<PlayerStaminaSystem>();
+        gameInput = GetComponent<GameInput>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
@@ -60,12 +63,12 @@ public class Player : MonoBehaviour
 
     public void ActivatePlayer()
     {
-        GetComponentInChildren<SpriteRenderer>().enabled = true;
+        spriteRenderer.enabled = true;
     }
 
     public void ResetPlayer()
     {
-        GetComponentInChildren<SpriteRenderer>().enabled = false;
+        spriteRenderer.enabled = false;
         transform.position = playerStartPoint.position;
         SetPlayerState(PlayerState.Idle);
     }
@@ -123,18 +126,9 @@ public class Player : MonoBehaviour
         return playerData;
     }
 
-    public float GetMoveSpeed()
-    {
-        return playerData.moveSpeed;
-    }
-
-    public float GetStamina()
-    {
-        return playerData.stamina;
-    }
-
     public void ReduceStamina()
     {
+        Debug.Log($"1.playerData.stamina: {playerData.stamina}");
         playerStaminaSystem.ReduceStamina(playerData);
     }
 

@@ -5,12 +5,17 @@ public class PlayerMovementSystem : MonoBehaviour
 {
     private float moveSpeed;
     private Coroutine moveCoroutine;
-
-    public GameInput gameInput;
+    private GameInput gameInput;
+    private PlayerStaminaSystem playerStaminaSystem;
+    private PlayerAnimationController playerAnimationController;
 
     private void Awake()
     {
         moveSpeed = Player.DEFAULT_MOVESPEED;
+
+        playerStaminaSystem = GetComponent<PlayerStaminaSystem>();
+        gameInput = GetComponent<GameInput>();
+        playerAnimationController = GetComponent<PlayerAnimationController>();
     }
 
     private void Start()
@@ -41,7 +46,7 @@ public class PlayerMovementSystem : MonoBehaviour
     private void HandleMovement()
     {
         // 스태미너 잔여량 부족시 이동하지 않음
-        if (Player.Instance.GetStamina() < Player.DEFAULT_STAMINA_CONSUMPTION) return;
+        if (playerStaminaSystem.GetStamina() < Player.DEFAULT_STAMINA_CONSUMPTION) return;
 
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, inputVector.y, transform.position.z);
@@ -69,7 +74,7 @@ public class PlayerMovementSystem : MonoBehaviour
         }
         moveCoroutine = StartCoroutine(MoveSmoothly(newPosition));
         // 이동 애니메이션 실행
-        GetComponentInChildren<PlayerAnimationController>().StartJumpAnimation();
+        playerAnimationController.StartJumpAnimation();
         // 이동시마다 스태미너 감소 
         Player.Instance.ReduceStamina();
         // Player state 변경

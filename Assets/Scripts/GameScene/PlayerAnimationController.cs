@@ -6,7 +6,7 @@ public class PlayerAnimationController : MonoBehaviour
 {
     private Animator animator;
 
-    private void Start()
+    private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
     }

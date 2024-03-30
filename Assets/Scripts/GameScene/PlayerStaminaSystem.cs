@@ -17,10 +17,11 @@ public class PlayerStaminaSystem : MonoBehaviour
 
     public void ReduceStamina(PlayerData playerData)
     {
+        Debug.Log($"2.playerData.stamina: {playerData.stamina}");
         if (playerData.stamina < Player.DEFAULT_STAMINA_CONSUMPTION) playerData.stamina = 0f;
         else playerData.stamina -= Player.DEFAULT_STAMINA_CONSUMPTION;
-
-        staminaUIController.SetUI(GetStamina());
+        Debug.Log($"3.playerData.stamina: {playerData.stamina}");
+        staminaUIController.SetUI(playerData.stamina);
     }
     private void RecoverStamina(PlayerData playerData)
     {

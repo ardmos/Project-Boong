@@ -5,16 +5,18 @@ public class StaminaUIController : MonoBehaviour
 {
     private Slider slider;
 
-    void Start()
+    public PlayerStaminaSystem playerStaminaSystem;
+
+    private void Awake()
     {
-        if (GetComponentInChildren<Slider>() == null)
-        {
-            Debug.LogError($"{nameof(StaminaUIController)} can't find slider component.");
-            return;
-        }
+        playerStaminaSystem = GetComponent<PlayerStaminaSystem>();
         slider = GetComponentInChildren<Slider>();
+    }
+
+    private void Start()
+    {
         slider.maxValue = Player.DEFAULT_STAMINA_MAX;
-        slider.value = Player.Instance.GetStamina();
+        slider.value = playerStaminaSystem.GetStamina();
     }
 
     public void SetUI(float sliderValue)

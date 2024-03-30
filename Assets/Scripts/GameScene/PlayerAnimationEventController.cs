@@ -4,7 +4,7 @@ public class PlayerAnimationEventController : MonoBehaviour
 {
     private PlayerVFXController playerVFXController;
 
-    private void Start()
+    private void Awake()
     {
         playerVFXController = GetComponentInParent<PlayerVFXController>();
     }
