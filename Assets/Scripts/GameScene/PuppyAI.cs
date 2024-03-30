@@ -41,9 +41,9 @@ public class PuppyAI : MonoBehaviour
     public Transform player;
     public float chaseDistance = 10f;
 
-    [SerializeField] private int currentPatrolIndex = 0;
-    [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private Animator animator;
+    private int currentPatrolIndex = 0;
+    private NavMeshAgent agent;
+    private Animator animator;
 
     private void Awake()
     {
@@ -215,7 +215,7 @@ public class PuppyAI : MonoBehaviour
 
         for (int i = (int)CharacterAnimations.Idle; i <= (int)CharacterAnimations.Eating; i++)
         {
-            animator.SetBool($"{((CharacterAnimations)i).ToString()}", false);           
+            animator.SetBool($"{((CharacterAnimations)i).ToString()}", false);
         }
 
         animator.SetBool(animation.ToString(), true);

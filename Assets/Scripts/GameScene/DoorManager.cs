@@ -44,7 +44,7 @@ public class DoorManager : MonoBehaviour
     public void OpenDoor(DoorNames doorName)
     {
         doorControllers[doorName].OnDoorOpened();
-        doorEvents[doorName](this, new DoorEventArgs(DoorEvent.Opened, doorName));
+        doorEvents[doorName].Invoke(this, new DoorEventArgs(DoorEvent.Opened, doorName));
     }
 
     // 문을 닫고 상태 변경 이벤트 발생
@@ -53,7 +53,7 @@ public class DoorManager : MonoBehaviour
         foreach (DoorNames doorName in Enum.GetValues(typeof(DoorNames)))
         {
             doorControllers[doorName].OnDoorClosed();
-            doorEvents[doorName](this, new DoorEventArgs(DoorEvent.Closed, doorName));
+            doorEvents[doorName].Invoke(this, new DoorEventArgs(DoorEvent.Closed, doorName));
         }
     }
 

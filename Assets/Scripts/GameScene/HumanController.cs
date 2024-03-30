@@ -20,8 +20,8 @@ public class HumanController : MonoBehaviour
     private UnityAction onAllMovementsComplete;
     private Coroutine moveCoroutine;
 
-    [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private Animator animator;
+    private NavMeshAgent agent;
+    private Animator animator;
 
     private void Awake()
     {
