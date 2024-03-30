@@ -10,10 +10,10 @@ public class HomeButtonController : MonoBehaviour
 
     private void Start()
     {
-        buttonHome.onClick.AddListener(OnButtonHomeClicked);
+        buttonHome.onClick.AddListener(OnShowExitPopup);
     }
 
-    private void OnButtonHomeClicked()
+    private void OnShowExitPopup()
     {
         exitPopupController.Show();
     }
