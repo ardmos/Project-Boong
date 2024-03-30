@@ -24,7 +24,7 @@ public enum PlayerState
 public class Player : MonoBehaviour
 {
     public const float DEFAULT_STAMINA_MAX = 100f;
-    public const float DEFAULT_MOVESPEED = 50f;
+    public const float DEFAULT_MOVESPEED = 100f;
     public const float DEFAULT_STAMINA_CONSUMPTION = 5f;
     public const float DEFAULT_STAMINA_RECOVERY_AMOUNT = 20f;
     public const float DEFAULT_STAMINA_RECOVERY_INTERVAL = 1f;
@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
         playerMovementSystem = GetComponent<PlayerMovementSystem>();
         playerStaminaSystem = GetComponent<PlayerStaminaSystem>();
         gameInput = GetComponent<GameInput>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
@@ -126,10 +126,14 @@ public class Player : MonoBehaviour
         return playerData;
     }
 
+    public void UpdatePlayerStamina(float stamina)
+    {
+        playerData.stamina = stamina;
+    }
+
     public void ReduceStamina()
     {
-        Debug.Log($"1.playerData.stamina: {playerData.stamina}");
-        playerStaminaSystem.ReduceStamina(playerData);
+        playerStaminaSystem.ReduceStamina();
     }
 
     public void SetPlayerState(PlayerState playerState)

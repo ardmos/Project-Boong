@@ -3994,7 +3994,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79350b534f257b54abb424fd4d0f8373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameInput: {fileID: 1283353756}
 --- !u!114 &1283353753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4007,7 +4006,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043f4b0829b1f7941be08979f2ebe9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameInput: {fileID: 1283353756}
   playerStartPoint: {fileID: 383466056}
 --- !u!61 &1283353754
 BoxCollider2D:
@@ -6699,6 +6697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77a74e61222e434597d4627e8b4408b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStaminaSystem: {fileID: 1283353759}
 --- !u!1 &1866926694
 GameObject:
   m_ObjectHideFlags: 0

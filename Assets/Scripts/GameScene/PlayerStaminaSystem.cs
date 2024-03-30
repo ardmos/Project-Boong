@@ -15,24 +15,25 @@ public class PlayerStaminaSystem : MonoBehaviour
         stamina = Player.DEFAULT_STAMINA_MAX;
     }
 
-    public void ReduceStamina(PlayerData playerData)
+    public void ReduceStamina()
     {
-        Debug.Log($"2.playerData.stamina: {playerData.stamina}");
-        if (playerData.stamina < Player.DEFAULT_STAMINA_CONSUMPTION) playerData.stamina = 0f;
-        else playerData.stamina -= Player.DEFAULT_STAMINA_CONSUMPTION;
-        Debug.Log($"3.playerData.stamina: {playerData.stamina}");
-        staminaUIController.SetUI(playerData.stamina);
+        if (stamina < Player.DEFAULT_STAMINA_CONSUMPTION) stamina = 0f;
+        else stamina -= Player.DEFAULT_STAMINA_CONSUMPTION;
+
+        Player.Instance.UpdatePlayerStamina(stamina);
+        staminaUIController.SetUI(stamina);
     }
-    private void RecoverStamina(PlayerData playerData)
+    private void RecoverStamina()
     {
-        if (playerData.stamina + Player.DEFAULT_STAMINA_RECOVERY_AMOUNT > Player.DEFAULT_STAMINA_MAX)
+        if (stamina + Player.DEFAULT_STAMINA_RECOVERY_AMOUNT > Player.DEFAULT_STAMINA_MAX)
         {
-            playerData.stamina = Player.DEFAULT_STAMINA_MAX;
+            stamina = Player.DEFAULT_STAMINA_MAX;
             // 스태미너 회복 중지
             StopStaminaRecovery();
         }
-        else playerData.stamina += Player.DEFAULT_STAMINA_RECOVERY_AMOUNT;
+        else stamina += Player.DEFAULT_STAMINA_RECOVERY_AMOUNT;
 
+        Player.Instance.UpdatePlayerStamina(stamina);
         staminaUIController.SetUI(GetStamina());
     }
 
@@ -61,7 +62,7 @@ public class PlayerStaminaSystem : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Player.DEFAULT_STAMINA_RECOVERY_INTERVAL);
-            RecoverStamina(Player.Instance.GetPlayerData());
+            RecoverStamina();
         }
     }
 }

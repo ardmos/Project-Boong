@@ -9,7 +9,6 @@ public class StaminaUIController : MonoBehaviour
 
     private void Awake()
     {
-        playerStaminaSystem = GetComponent<PlayerStaminaSystem>();
         slider = GetComponentInChildren<Slider>();
     }
 
