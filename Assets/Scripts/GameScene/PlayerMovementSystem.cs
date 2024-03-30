@@ -1,22 +1,23 @@
 using System.Collections;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementSystem : MonoBehaviour
 {
     private float moveSpeed;
     private Coroutine moveCoroutine;
 
     public GameInput gameInput;
 
+    private void Awake()
+    {
+        moveSpeed = Player.DEFAULT_MOVESPEED;
+    }
+
     private void Start()
     {
         // Add Callbacks 
         gameInput.OnMoveStarted += GameInput_OnMoveStarted;
         gameInput.OnMoveEnded += GameInput_OnMoveEnded;
-
-        moveSpeed = Player.Instance.GetMoveSpeed();
     }
 
     private void OnDisable()
@@ -73,12 +74,11 @@ public class PlayerMovement : MonoBehaviour
         Player.Instance.ReduceStamina();
         // Player state 변경
         Player.Instance.SetPlayerState(PlayerState.Moving);
+    }
 
-        // 진행방향 바라볼 때
-        //Rotate(moveDir);
-        // 마우스 커서 방향 바라볼 때
-        //Vector3 mouseDir = GetMouseDir();
-        //Rotate(mouseDir);
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;   
     }
 
     private IEnumerator ChangePlayerStateToRestingOverTime()

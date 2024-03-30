@@ -34,20 +34,28 @@ public class Player : MonoBehaviour
 
     public event EventHandler OnExitPointReached;
     public event EventHandler OnCaughtByPuppy;
-    public StaminaUIController staminaUIController;
+
     public GameInput gameInput;
-    public PlayerState playerState;
     public Transform playerStartPoint; 
 
     private PlayerData playerData;
-    private Coroutine staminaRecoveryCoroutine;
+    private PlayerState playerState;
+    private PlayerMovementSystem playerMovementSystem;
+    private PlayerStaminaSystem playerStaminaSystem;
 
     private void Awake()
     {
         Debug.Log("Player Awake()");
         Instance = this;
+
+        playerMovementSystem = GetComponent<PlayerMovementSystem>();
+        playerStaminaSystem = GetComponent<PlayerStaminaSystem>();  
+    }
+
+    private void Start()
+    {
         // Init Player Data
-        playerData = new PlayerData(DEFAULT_MOVESPEED, DEFAULT_STAMINA_MAX);
+        playerData = new PlayerData(playerMovementSystem.GetMoveSpeed(), playerStaminaSystem.GetStamina());
     }
 
     public void ActivatePlayer()
@@ -84,7 +92,7 @@ public class Player : MonoBehaviour
             DoorNames doorName;
             if (Enum.TryParse(collision.name, out doorName))
             {
-                OpenDoor(doorName);
+                DoorManager.Instance.OpenDoor(doorName);
             }
             else
             {
@@ -101,47 +109,35 @@ public class Player : MonoBehaviour
                 break;
             case PlayerState.Moving:
                 // 스태미너 회복 중지
-                StopStaminaRecoveryCoroutine();
+                playerStaminaSystem.StopStaminaRecovery();
                 break;
             case PlayerState.Resting:
                 // 스태미너 회복 시작
-                StartStaminaRecoveryCoroutine();
+                playerStaminaSystem.StartStaminaRecovery();
                 break;
         }
     }
 
-    private void OpenDoor(DoorNames doorName)
+    public PlayerData GetPlayerData()
     {
-        DoorManager.Instance.OpenDoor(doorName);
+        return playerData;
     }
 
     public float GetMoveSpeed()
     {
         return playerData.moveSpeed;
     }
+
     public float GetStamina()
     {
         return playerData.stamina;
     }
+
     public void ReduceStamina()
     {
-        if (playerData.stamina < DEFAULT_STAMINA_CONSUMPTION) playerData.stamina = 0f;
-        else playerData.stamina -= DEFAULT_STAMINA_CONSUMPTION;
-
-        staminaUIController.SetUI(GetStamina());
+        playerStaminaSystem.ReduceStamina(playerData);
     }
-    private void RecoverStamina()
-    {
-        if (playerData.stamina + DEFAULT_STAMINA_RECOVERY_AMOUNT > DEFAULT_STAMINA_MAX)
-        {
-            playerData.stamina = DEFAULT_STAMINA_MAX;
-            // 스태미너 회복 중지
-            StopStaminaRecoveryCoroutine();
-        }
-        else playerData.stamina += DEFAULT_STAMINA_RECOVERY_AMOUNT;
 
-        staminaUIController.SetUI(GetStamina());
-    }
     public void SetPlayerState(PlayerState playerState)
     {
         this.playerState = playerState;
@@ -149,32 +145,8 @@ public class Player : MonoBehaviour
         PlayerStateMachine();
     }
 
-    public void DisableMovement()
+    public void DisableControl()
     {
         gameInput.SetControllable(false);
-    }
-
-    private void StartStaminaRecoveryCoroutine()
-    {
-        if (staminaRecoveryCoroutine != null) return;
-
-        staminaRecoveryCoroutine = StartCoroutine(StaminaRecoveryTimer());
-    }
-
-    private void StopStaminaRecoveryCoroutine()
-    {
-        if (staminaRecoveryCoroutine == null) return;
-
-        StopCoroutine(staminaRecoveryCoroutine);
-        staminaRecoveryCoroutine = null;
-    }
-
-    private IEnumerator StaminaRecoveryTimer()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(DEFAULT_STAMINA_RECOVERY_INTERVAL);
-            RecoverStamina();
-        }
     }
 }

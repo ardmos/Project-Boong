@@ -113,8 +113,8 @@ public class CutSceneManager : MonoBehaviour
                 });
                 break;
             case CutSceneState.Timeout_Step1:
-                // 플레이어 이동 정지
-                Player.Instance.DisableMovement();
+                // 플레이어 조작 불가
+                Player.Instance.DisableControl();
                 StartCoroutine(WaitAndStartTimeoutStep2());
                 break;
             case CutSceneState.Timeout_Step2:

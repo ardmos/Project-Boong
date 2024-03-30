@@ -588,9 +588,6 @@ MonoBehaviour:
   patrolSpeed: 3
   player: {fileID: 1283353750}
   chaseDistance: 10
-  currentPatrolIndex: 0
-  agent: {fileID: 0}
-  animator: {fileID: 0}
 --- !u!50 &219550361
 Rigidbody2D:
   serializedVersion: 4
@@ -2062,8 +2059,6 @@ MonoBehaviour:
   - {fileID: 1761286430}
   movePointsGameOver: []
   startPosition: {fileID: 1059267261}
-  agent: {fileID: 0}
-  animator: {fileID: 0}
 --- !u!195 &568411813
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3959,6 +3954,7 @@ GameObject:
   - component: {fileID: 1283353752}
   - component: {fileID: 1283353757}
   - component: {fileID: 1283353758}
+  - component: {fileID: 1283353759}
   - component: {fileID: 1283353753}
   - component: {fileID: 1283353754}
   - component: {fileID: 1283353755}
@@ -4011,9 +4007,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043f4b0829b1f7941be08979f2ebe9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  staminaUIController: {fileID: 1812488446}
   gameInput: {fileID: 1283353756}
-  playerState: 0
   playerStartPoint: {fileID: 383466056}
 --- !u!61 &1283353754
 BoxCollider2D:
@@ -4124,6 +4118,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxJumpPrefab: {fileID: 3004160035483899234, guid: f2e16c93e94bbdf448f8720c38ec4512, type: 3}
+--- !u!114 &1283353759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283353749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c76e97a89d922c646ab92f77b6219f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staminaUIController: {fileID: 1812488446}
 --- !u!1 &1318394788
 GameObject:
   m_ObjectHideFlags: 0
