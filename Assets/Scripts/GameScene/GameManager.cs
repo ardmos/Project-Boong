@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
                 ResetPuppy();
                 ResetHuman();
                 ResetPlayer();
+                ResetDoors();
                 break;
             case GameState.Phase_1:
                 StartPhase1();
@@ -149,6 +150,11 @@ public class GameManager : MonoBehaviour
     private void ResetPlayer()
     {
         Player.Instance.ResetPlayer();
+    }
+
+    private void ResetDoors()
+    {
+        DoorManager.Instance.CloseAllDoors();
     }
 
     /// <summary>

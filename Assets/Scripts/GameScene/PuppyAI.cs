@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public enum PuppyState
 {
@@ -59,41 +61,11 @@ public class PuppyAI : MonoBehaviour
 
     private void Start()
     {
-        DoorManager.Instance.OnKitchenDoorOpen += OnKitchenDoorOpen;
-        DoorManager.Instance.OnBedRoomDoorOpen += OnBedRoomDoorOpen;
-        DoorManager.Instance.OnBathRoomDoorOpen += OnBathRoomDoorOpen;
-        DoorManager.Instance.OnWorkoutRoomDoorOpen += OnWorkoutRoomDoorOpen;
-        DoorManager.Instance.OnGarageDoorOpen += OnGarageDoorOpen;
-    }
-
-    private void OnGameOverTimeout(object sender, System.EventArgs e)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private void OnGarageDoorOpen(object sender, System.EventArgs e)
-    {
-        availablePatrolPoints.AddRange(patrolPointsGarage);
-    }
-
-    private void OnWorkoutRoomDoorOpen(object sender, System.EventArgs e)
-    {
-        availablePatrolPoints.AddRange(patrolPointsWorkoutRoom);
-    }
-
-    private void OnBathRoomDoorOpen(object sender, System.EventArgs e)
-    {
-        availablePatrolPoints.AddRange(patrolPointsBathRoom);
-    }
-
-    private void OnBedRoomDoorOpen(object sender, System.EventArgs e)
-    {
-        availablePatrolPoints.AddRange(patrolPointsBedRoom);
-    }
-
-    private void OnKitchenDoorOpen(object sender, System.EventArgs e)
-    {
-        availablePatrolPoints.AddRange(patrolPointsKitchen);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_Kitchen, OnDoorEvent);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_BedRoom, OnDoorEvent);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_BathRoom, OnDoorEvent);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_WorkoutRoom, OnDoorEvent);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_Garage, OnDoorEvent);
     }
 
     private void OnDisable()
@@ -103,11 +75,64 @@ public class PuppyAI : MonoBehaviour
             Debug.Log("OnDisable(): DoorManager.Instance is null");
             return;
         }
-        DoorManager.Instance.OnKitchenDoorOpen -= OnKitchenDoorOpen;
-        DoorManager.Instance.OnBedRoomDoorOpen -= OnBedRoomDoorOpen;
-        DoorManager.Instance.OnBathRoomDoorOpen -= OnBathRoomDoorOpen;
-        DoorManager.Instance.OnWorkoutRoomDoorOpen -= OnWorkoutRoomDoorOpen;
-        DoorManager.Instance.OnGarageDoorOpen -= OnGarageDoorOpen;
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_Kitchen, OnDoorEvent);
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_BedRoom, OnDoorEvent);
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_BathRoom, OnDoorEvent);
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_WorkoutRoom, OnDoorEvent);
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_Garage, OnDoorEvent);
+    }
+
+    // 문 이벤트 처리
+    private void OnDoorEvent(object sender, DoorEventArgs e)
+    {
+        // 문 상태에 따라 처리
+        switch (e.DoorEvent)
+        {
+            case DoorEvent.Opened:
+                Debug.Log($"{e.DoorName}이 열렸습니다.");
+                // 문이 열렸을 때의 처리
+                switch (e.DoorName)
+                {
+                    case DoorNames.Door_Kitchen:
+                        availablePatrolPoints.AddRange(patrolPointsKitchen);
+                        break;
+                    case DoorNames.Door_BedRoom:
+                        availablePatrolPoints.AddRange(patrolPointsBedRoom);
+                        break;
+                    case DoorNames.Door_BathRoom:
+                        availablePatrolPoints.AddRange(patrolPointsBathRoom);
+                        break;
+                    case DoorNames.Door_WorkoutRoom:
+                        availablePatrolPoints.AddRange(patrolPointsWorkoutRoom);
+                        break;
+                    case DoorNames.Door_Garage:
+                        availablePatrolPoints.AddRange(patrolPointsGarage);
+                        break;
+                }
+                break;
+            case DoorEvent.Closed:
+                Debug.Log($"{e.DoorName}이 닫혔습니다.");
+                // 문이 닫혔을 때의 처리
+                switch (e.DoorName)
+                {
+                    case DoorNames.Door_Kitchen:
+                        availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsKitchen, p => p == point));
+                        break;
+                    case DoorNames.Door_BedRoom:
+                        availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsBedRoom, p => p == point));
+                        break;
+                    case DoorNames.Door_BathRoom:
+                        availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsBathRoom, p => p == point));
+                        break;
+                    case DoorNames.Door_WorkoutRoom:
+                        availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsWorkoutRoom, p => p == point));
+                        break;
+                    case DoorNames.Door_Garage:
+                        availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsGarage, p => p == point));
+                        break;
+                }
+                break;
+        }
     }
 
     private void Update()

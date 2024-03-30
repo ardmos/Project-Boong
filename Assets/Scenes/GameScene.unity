@@ -2983,7 +2983,7 @@ GameObject:
   - component: {fileID: 1008506320}
   - component: {fileID: 1008506319}
   m_Layer: 0
-  m_Name: Door_Bath room
+  m_Name: Door_BathRoom
   m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3088,9 +3088,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb8cefe887799645a142d856448b64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorName: 2
   doorOpen: {fileID: 882797386, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
+  doorClose: {fileID: -798207009, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
   openedDoorPosition: {x: 18.57, y: 3.68, z: 0}
+  closedDoorPosition: {x: 17.95, y: 4.51, z: 0}
   isDoorOpen: 0
   shadowController: {fileID: 1521784795}
 --- !u!114 &1008506322
@@ -4795,9 +4796,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb8cefe887799645a142d856448b64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorName: 0
   doorOpen: {fileID: 882797386, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
+  doorClose: {fileID: -798207009, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
   openedDoorPosition: {x: -11.55, y: 2.28, z: 0}
+  closedDoorPosition: {x: -12.21, y: 3.3, z: 0}
   isDoorOpen: 0
   shadowController: {fileID: 1049398763}
 --- !u!61 &1412824821
@@ -4887,7 +4889,7 @@ GameObject:
   - component: {fileID: 1425768249}
   - component: {fileID: 1425768250}
   m_Layer: 0
-  m_Name: Door_Bed room
+  m_Name: Door_BedRoom
   m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4988,9 +4990,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb8cefe887799645a142d856448b64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorName: 1
   doorOpen: {fileID: -798207009, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
+  doorClose: {fileID: 267716873, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
   openedDoorPosition: {x: 6.94, y: -0.9, z: 0}
+  closedDoorPosition: {x: 7.78, y: 0.65, z: 0}
   isDoorOpen: 0
   shadowController: {fileID: 806101720}
 --- !u!61 &1425768249
@@ -5185,9 +5188,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb8cefe887799645a142d856448b64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorName: 4
   doorOpen: {fileID: -798207009, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
+  doorClose: {fileID: 267716873, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
   openedDoorPosition: {x: -13.52, y: -9.68, z: 0}
+  closedDoorPosition: {x: -12.63, y: -8.03, z: 0}
   isDoorOpen: 0
   shadowController: {fileID: 1041385045}
 --- !u!114 &1442740950
@@ -5957,7 +5961,7 @@ GameObject:
   - component: {fileID: 1639489732}
   - component: {fileID: 1639489733}
   m_Layer: 0
-  m_Name: Door_Workout room
+  m_Name: Door_WorkoutRoom
   m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6058,9 +6062,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb8cefe887799645a142d856448b64a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorName: 3
   doorOpen: {fileID: 882797386, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
+  doorClose: {fileID: -798207009, guid: 2c2af2d544dee774fa2bb2430b261ff1, type: 3}
   openedDoorPosition: {x: -1.93, y: -3.13, z: 0}
+  closedDoorPosition: {x: -2.59, y: -2.15, z: 0}
   isDoorOpen: 0
   shadowController: {fileID: 1090046075}
 --- !u!61 &1639489732

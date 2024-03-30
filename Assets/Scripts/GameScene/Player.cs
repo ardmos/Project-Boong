@@ -81,7 +81,15 @@ public class Player : MonoBehaviour
 
         if (collision.CompareTag("Door"))
         {
-            OpenDoor(collision.GetComponent<DoorController>());
+            DoorNames doorName;
+            if (Enum.TryParse(collision.name, out doorName))
+            {
+                OpenDoor(doorName);
+            }
+            else
+            {
+                Debug.LogWarning("Door name does not match any enum value.");
+            }
         }
     }
 
@@ -102,9 +110,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OpenDoor(DoorController doorController)
+    private void OpenDoor(DoorNames doorName)
     {
-        doorController.Open();
+        DoorManager.Instance.OpenDoor(doorName);
     }
 
     public float GetMoveSpeed()

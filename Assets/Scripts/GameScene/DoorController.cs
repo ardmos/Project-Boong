@@ -1,11 +1,13 @@
 using NavMeshPlus.Components;
+using System;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    public DoorNames doorName;
     public Sprite doorOpen;
+    public Sprite doorClose;
     public Vector3 openedDoorPosition;
+    public Vector3 closedDoorPosition;
     public bool isDoorOpen;
     public ShadowController shadowController;
 
@@ -17,7 +19,7 @@ public class DoorController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();    
     }
 
-    public void Open()
+    public void OnDoorOpened()
     {
         if (isDoorOpen) return;
         isDoorOpen = true;
@@ -27,10 +29,25 @@ public class DoorController : MonoBehaviour
         spriteRenderer.sprite = doorOpen;
         // 3. 이 문이 가리고 있던 지역 Shadow 비활성화
         shadowController.DisableShadow();
-        // 4. NavMesh rebake
+        // 4. NavMesh 지나가지 못하는 영역에서 제거 
         GetComponent<NavMeshModifier>().area = 0;
+        // 5. NavMesh rebake
         NavMeshManager.Instance.ReBake();
-        // 5. DoorManager에게 문 열림 보고
-        DoorManager.Instance.OnDoorOpened(doorName);
+    }
+
+    public void OnDoorClosed()
+    {
+        if (!isDoorOpen) return;
+        isDoorOpen = false;
+        // 1. 이미지 변경으로 인한 위치 재설정
+        transform.localPosition = closedDoorPosition; 
+        // 2. 이미지 변경
+        spriteRenderer.sprite = doorClose; 
+        // 3. 이 문이 가리고 있던 지역 Shadow 활성화
+        shadowController.EnableShadow();
+        // 4. NavMesh에 지나가지 못하는 영역으로 추가
+        GetComponent<NavMeshModifier>().area = 1;
+        // 5. NavMesh rebake
+        NavMeshManager.Instance.ReBake();
     }
 }
