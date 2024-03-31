@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public struct PlayerData
@@ -46,7 +45,6 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Player Awake()");
         Instance = this;
 
         playerMovementSystem = GetComponent<PlayerMovementSystem>();
@@ -59,23 +57,6 @@ public class Player : MonoBehaviour
     {
         // Init Player Data
         playerData = new PlayerData(playerMovementSystem.GetMoveSpeed(), playerStaminaSystem.GetStamina());
-    }
-
-    public void ActivatePlayer()
-    {
-        spriteRenderer.enabled = true;
-    }
-
-    public void ResetPlayer()
-    {
-        spriteRenderer.enabled = false;
-        transform.position = playerStartPoint.position;
-        SetPlayerState(PlayerState.Idle);
-    }
-
-    private void OnDestroy()
-    {
-        Instance = null;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -104,21 +85,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void PlayerStateMachine()
+    private void OnDestroy()
     {
-        switch (playerState)
-        {
-            case PlayerState.Idle:
-                break;
-            case PlayerState.Moving:
-                // 스태미너 회복 중지
-                playerStaminaSystem.StopStaminaRecovery();
-                break;
-            case PlayerState.Resting:
-                // 스태미너 회복 시작
-                playerStaminaSystem.StartStaminaRecovery();
-                break;
-        }
+        Instance = null;
+    }
+
+    public void ActivatePlayer()
+    {
+        spriteRenderer.enabled = true;
+    }
+
+    public void ResetPlayer()
+    {
+        spriteRenderer.enabled = false;
+        transform.position = playerStartPoint.position;
+        SetPlayerState(PlayerState.Idle);
     }
 
     public PlayerData GetPlayerData()
@@ -146,5 +127,22 @@ public class Player : MonoBehaviour
     public void DisableControl()
     {
         gameInput.SetControllable(false);
+    }
+
+    private void PlayerStateMachine()
+    {
+        switch (playerState)
+        {
+            case PlayerState.Idle:
+                break;
+            case PlayerState.Moving:
+                // 스태미너 회복 중지
+                playerStaminaSystem.StopStaminaRecovery();
+                break;
+            case PlayerState.Resting:
+                // 스태미너 회복 시작
+                playerStaminaSystem.StartStaminaRecovery();
+                break;
+        }
     }
 }

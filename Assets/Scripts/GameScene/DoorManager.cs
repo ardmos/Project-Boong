@@ -40,6 +40,11 @@ public class DoorManager : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
+
     // 문을 열고 상태 변경 이벤트 발생
     public void OpenDoor(DoorNames doorName)
     {

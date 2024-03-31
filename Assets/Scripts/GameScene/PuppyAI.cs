@@ -61,11 +61,17 @@ public class PuppyAI : MonoBehaviour
 
     private void Start()
     {
+        // Add Callbacks
         DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_Kitchen, OnDoorEvent);
         DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_BedRoom, OnDoorEvent);
         DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_BathRoom, OnDoorEvent);
         DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_WorkoutRoom, OnDoorEvent);
         DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_Garage, OnDoorEvent);
+    }
+
+    private void Update()
+    {
+        PuppyStateMachine();
     }
 
     private void OnDisable()
@@ -75,11 +81,107 @@ public class PuppyAI : MonoBehaviour
             Debug.Log("OnDisable(): DoorManager.Instance is null");
             return;
         }
+        // Unregister Callbacks
         DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_Kitchen, OnDoorEvent);
         DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_BedRoom, OnDoorEvent);
         DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_BathRoom, OnDoorEvent);
         DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_WorkoutRoom, OnDoorEvent);
         DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_Garage, OnDoorEvent);
+    }
+
+    public void SetPuppyState(PuppyState state)
+    {
+        currentState = state;
+    }
+
+    public void ResetPuppy()
+    {
+        if (!agent.isActiveAndEnabled) return;
+
+        agent.isStopped = true;
+        agent.enabled = false;
+        transform.position = startPosition.position;
+        agent.enabled = true;
+        SetPuppyState(PuppyState.Idle);
+    }
+
+    private void PuppyStateMachine()
+    {
+        switch (currentState)
+        {
+            case PuppyState.Idle:
+                Idle();
+                break;
+            case PuppyState.Patrol:
+                Patrol();
+                break;
+            case PuppyState.Chase:
+                Chase();
+                break;
+        }
+    }
+
+    private void Idle()
+    {
+        // Set animation
+        SetAnimation(CharacterAnimations.Idle);
+    }
+
+    private void Patrol()
+    {
+        // Set animation
+        SetAnimation(CharacterAnimations.Running);
+
+        agent.speed = patrolSpeed;
+        // Move towards the current patrol point
+        MovePuppy(availablePatrolPoints[currentPatrolIndex].position);
+
+        // Check if reached the patrol point
+        if (Vector3.Distance(transform.position, availablePatrolPoints[currentPatrolIndex].position) < 0.1f)
+        {
+            // Move to the next patrol point            
+            currentPatrolIndex = Random.Range(0, availablePatrolPoints.Count);
+        }
+
+        // Check if the player is within chase distance
+        if (Vector3.Distance(transform.position, player.position) < chaseDistance)
+        {
+            SetPuppyState(PuppyState.Chase);
+        }
+    }
+
+    private void Chase()
+    {
+        // Set animation
+        SetAnimation(CharacterAnimations.Running);
+
+        agent.speed = chaseSpeed;
+        // Move towards the player
+        MovePuppy(player.position);
+
+        // Check if the player is out of chase distance
+        if (Vector3.Distance(transform.position, player.position) > chaseDistance)
+        {
+            SetPuppyState(PuppyState.Patrol);
+        }
+    }
+
+    private void MovePuppy(Vector3 targetPos)
+    {
+        agent.isStopped = false;
+        agent.SetDestination(targetPos);
+    }
+
+    private void SetAnimation(CharacterAnimations animation)
+    {
+        if (animator.GetBool(animation.ToString())) return;
+
+        for (int i = (int)CharacterAnimations.Idle; i <= (int)CharacterAnimations.Eating; i++)
+        {
+            animator.SetBool($"{((CharacterAnimations)i).ToString()}", false);
+        }
+
+        animator.SetBool(animation.ToString(), true);
     }
 
     // 문 이벤트 처리
@@ -133,107 +235,5 @@ public class PuppyAI : MonoBehaviour
                 }
                 break;
         }
-    }
-
-    private void Update()
-    {
-        PuppyStateMachine();
-    }
-
-    private void PuppyStateMachine()
-    {
-        switch (currentState)
-        {
-            case PuppyState.Idle:
-                Idle();
-                break;
-            case PuppyState.Patrol:
-                Patrol();
-                break;
-            case PuppyState.Chase:
-                Chase();
-                break;
-        }
-    }
-
-    private void Idle()
-    {
-        // Set animation
-        SetAnimation(CharacterAnimations.Idle);
-    }
-
-    private void Patrol()
-    {
-        // Set animation
-        SetAnimation(CharacterAnimations.Running);
-
-        agent.speed = patrolSpeed;
-        // Move towards the current patrol point
-        MovePuppy(availablePatrolPoints[currentPatrolIndex].position);
-        //Debug.Log($"currentPatrolIndex: {currentPatrolIndex}, availablePatrolPoints.Count: {availablePatrolPoints.Count}, next patrol point name: {availablePatrolPoints[currentPatrolIndex].name}");
-
-        // Check if reached the patrol point
-        if (Vector3.Distance(transform.position, availablePatrolPoints[currentPatrolIndex].position) < 0.1f)
-        {
-            //Debug.Log("patrol point reached! looking for next patrol point");
-            // Move to the next patrol point            
-            currentPatrolIndex = Random.Range(0, availablePatrolPoints.Count);
-        }
-
-        // Check if the player is within chase distance
-        if (Vector3.Distance(transform.position, player.position) < chaseDistance)
-        {
-            SetPuppyState(PuppyState.Chase);
-        }
-    }
-
-    private void Chase()
-    {
-        // Set animation
-        SetAnimation(CharacterAnimations.Running);
-
-        agent.speed = chaseSpeed;
-        // Move towards the player
-        MovePuppy(player.position);
-
-        // Check if the player is out of chase distance
-        if (Vector3.Distance(transform.position, player.position) > chaseDistance)
-        {
-            SetPuppyState(PuppyState.Patrol);
-        }
-    }
-
-    private void MovePuppy(Vector3 targetPos)
-    {
-        agent.isStopped = false;
-        agent.SetDestination(targetPos);
-    }
-
-    private void SetAnimation(CharacterAnimations animation)
-    {
-        if (animator.GetBool(animation.ToString())) return;
-
-        for (int i = (int)CharacterAnimations.Idle; i <= (int)CharacterAnimations.Eating; i++)
-        {
-            animator.SetBool($"{((CharacterAnimations)i).ToString()}", false);
-        }
-
-        animator.SetBool(animation.ToString(), true);
-    }
-
-    public void SetPuppyState(PuppyState state)
-    {
-        currentState = state;
-    }
-
-    public void ResetPuppy()
-    {
-        if (!agent.isActiveAndEnabled) return;
-
-        agent.isStopped = true;
-        agent.enabled = false;
-        transform.position = startPosition.position;
-        agent.enabled = true;
-        SetPuppyState(PuppyState.Idle);
     }
 }

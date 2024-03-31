@@ -18,7 +18,7 @@ public class PlayerMovementSystem : MonoBehaviour
         playerAnimationController = GetComponent<PlayerAnimationController>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         // Add Callbacks 
         gameInput.OnMoveStarted += GameInput_OnMoveStarted;
@@ -30,6 +30,11 @@ public class PlayerMovementSystem : MonoBehaviour
         // Unregister Callbacks
         gameInput.OnMoveStarted -= GameInput_OnMoveStarted;
         gameInput.OnMoveEnded -= GameInput_OnMoveEnded;
+    }
+
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;
     }
 
     private void GameInput_OnMoveEnded(object sender, System.EventArgs e)
@@ -45,7 +50,7 @@ public class PlayerMovementSystem : MonoBehaviour
 
     private void HandleMovement()
     {
-        // 스태미너 잔여량 부족시 이동하지 않음
+        // 스태미너 부족시 이동하지 않음
         if (playerStaminaSystem.GetStamina() < Player.DEFAULT_STAMINA_CONSUMPTION) return;
 
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
@@ -55,15 +60,15 @@ public class PlayerMovementSystem : MonoBehaviour
         // 이동할 위치 계산
         Vector3 newPosition = transform.position + moveDir * moveDistance;
 
-        // 충돌 여부 확인
+        // 이동할 위치에 Raycast 쏴봄
         int playerLayer = 9;
         int layerMask = ~(1 << playerLayer);
         RaycastHit2D hit = Physics2D.Raycast(transform.position + moveDir, moveDir, moveDistance, layerMask);
-        
+
+        // 이동할 위치가 벽이면 이동하지 않음
         if (hit.collider != null && hit.collider.CompareTag("Wall"))
         {
             Debug.Log($"{hit.collider.tag}");
-            // 벽에 닿으면 이동하지 않음
             return;
         }
 
@@ -79,11 +84,6 @@ public class PlayerMovementSystem : MonoBehaviour
         Player.Instance.ReduceStamina();
         // Player state 변경
         Player.Instance.SetPlayerState(PlayerState.Moving);
-    }
-
-    public float GetMoveSpeed()
-    {
-        return moveSpeed;   
     }
 
     private IEnumerator ChangePlayerStateToRestingOverTime()

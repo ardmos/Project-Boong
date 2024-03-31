@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,7 +18,7 @@ public class CutSceneController : MonoBehaviour
     public Button buttonGiveUp;
     public Button buttonHome;
 
-    private void Start()
+    private void OnEnable()
     {
         buttonRestart.gameObject.SetActive(false);
         buttonGiveUp.gameObject.SetActive(false);
@@ -29,19 +28,11 @@ public class CutSceneController : MonoBehaviour
         buttonHome.onClick.AddListener(OnGoHome);
     }
 
-    private void OnRestartGame()
+    private void OnDisable()
     {
-        buttonRestart.gameObject.SetActive(false);
-        buttonGiveUp.gameObject.SetActive(false);
-        buttonHome.gameObject.SetActive(false);
-        gameObject.SetActive(false);
-        // 게임 재시작. 
-        GameManager.Instance.SetGameState(GameState.Intro);
-    }
-
-    private void OnGoHome()
-    {
-        SceneManager.LoadScene("TitleScene");
+        buttonRestart.onClick.RemoveListener(OnRestartGame);
+        buttonGiveUp.onClick.RemoveListener(OnGoHome);
+        buttonHome.onClick.RemoveListener(OnGoHome);
     }
 
     public void ShowCutScene()
@@ -57,6 +48,21 @@ public class CutSceneController : MonoBehaviour
     public void ActivateButtons()
     {
         StartCoroutine(ActivateButtonWithAnimation());
+    }
+
+    private void OnRestartGame()
+    {
+        buttonRestart.gameObject.SetActive(false);
+        buttonGiveUp.gameObject.SetActive(false);
+        buttonHome.gameObject.SetActive(false);
+        gameObject.SetActive(false);
+        // 게임 재시작. 
+        GameManager.Instance.SetGameState(GameState.Intro);
+    }
+
+    private void OnGoHome()
+    {
+        SceneManager.LoadScene("TitleScene");
     }
 
     private IEnumerator ActivateButtonWithAnimation()

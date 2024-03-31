@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class GameInput : MonoBehaviour
 {
-    private PlayerControls playerControls;
-    private bool isControllable;
-
     public event EventHandler OnMoveStarted;
     public event EventHandler OnMoveEnded;
+
+    private PlayerControls playerControls;
+    private bool isControllable;
 
     private void Awake()
     {
@@ -15,13 +15,16 @@ public class GameInput : MonoBehaviour
         playerControls.GamePlayGamePad.Enable();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        SetControllable(true);
-
         // Add Callbacks 
         playerControls.GamePlayGamePad.Move.started += Move_started;
         playerControls.GamePlayGamePad.Move.canceled += Move_canceled;
+    }
+
+    private void Start()
+    {
+        SetControllable(true);
     }
 
     private void OnDisable()
@@ -29,6 +32,19 @@ public class GameInput : MonoBehaviour
         // Unregister Callbacks
         playerControls.GamePlayGamePad.Move.started -= Move_started;
         playerControls.GamePlayGamePad.Move.canceled -= Move_canceled;
+    }
+
+    public Vector2 GetMovementVectorNormalized()
+    {
+        Vector2 inputVector = playerControls.GamePlayGamePad.Move.ReadValue<Vector2>();
+        inputVector = inputVector.normalized;
+
+        return inputVector;
+    }
+
+    public void SetControllable(bool isControllable)
+    {
+        this.isControllable = isControllable;
     }
 
     private void Move_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -40,21 +56,5 @@ public class GameInput : MonoBehaviour
     {
         if (!isControllable) return;
         OnMoveStarted.Invoke(this, EventArgs.Empty);
-    }
-
-    public Vector2 GetMovementVectorNormalized()
-    {
-        Vector2 inputVector = playerControls.GamePlayGamePad.Move.ReadValue<Vector2>();
-
-        inputVector = inputVector.normalized;
-
-        //Debug.Log(inputVector);
-
-        return inputVector;
-    }
-
-    public void SetControllable(bool isControllable)
-    {
-        this.isControllable = isControllable;
     }
 }

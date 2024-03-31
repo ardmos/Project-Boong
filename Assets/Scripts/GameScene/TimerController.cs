@@ -8,15 +8,15 @@ using UnityEngine;
 /// </summary>
 public class TimerController : MonoBehaviour
 {
+    public event EventHandler Phase1TimeEnded;
+    public event EventHandler Phase2TimeEnded;
+
     [SerializeField] private bool isTimerOn;
     [SerializeField] private bool isPhase1TimeEnded;
     [SerializeField] private bool isPhase2TimeEnded;
     [SerializeField] private TextMeshProUGUI txtTimer;
     [SerializeField] private float totalPassedTime;
-    int h, m, s;
-
-    public event EventHandler Phase1TimeEnded;
-    public event EventHandler Phase2TimeEnded;
+    private int h, m, s;
 
     private void Awake()
     {
@@ -46,7 +46,7 @@ public class TimerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Timer 초기화 ( Start() 에서 호출됩니다 ) 
+    /// Timer 초기화 ( Awake() 에서 호출됩니다 ) 
     /// </summary>
     public void ResetTimer()
     {

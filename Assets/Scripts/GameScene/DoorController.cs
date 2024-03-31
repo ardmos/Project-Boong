@@ -1,18 +1,17 @@
 using NavMeshPlus.Components;
-using System;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
-    private NavMeshModifier navMeshModifier;
-
     public Sprite doorOpen;
     public Sprite doorClose;
     public Vector3 openedDoorPosition;
     public Vector3 closedDoorPosition;
     public bool isDoorOpen;
     public ShadowController shadowController;
+
+    private SpriteRenderer spriteRenderer;
+    private NavMeshModifier navMeshModifier;
 
     private void Awake()
     {

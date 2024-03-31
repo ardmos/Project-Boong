@@ -39,6 +39,32 @@ public class CutSceneManager : MonoBehaviour
         GameManager.Instance.OnGameWin += OnGameWin;
     }
 
+    private void OnDisable()
+    {
+        if (GameManager.Instance == null)
+        {
+            Debug.Log("OnDisable(): GameManager.Instance is null");
+            return;
+        }
+
+        GameManager.Instance.OnGameOverTimeout -= OnGameOverTimeout;
+        GameManager.Instance.OnGameOverByPuppy -= OnGameOverByPuppy;
+        GameManager.Instance.OnGameWin -= OnGameWin;
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
+
+    /// <summary>
+    /// ÄÆ¾À ½ÃÀÛ!
+    /// </summary>
+    public void StartIntroCutScene()
+    {
+        SetCutSceneState(CutSceneState.Intro_Step1);
+    }
+
     private void OnGameWin(object sender, System.EventArgs e)
     {
         SetCutSceneState(CutSceneState.Win);
@@ -54,17 +80,11 @@ public class CutSceneManager : MonoBehaviour
         SetCutSceneState(CutSceneState.Timeout_Step1);
     }
 
-    private void OnDisable()
+    private void SetCutSceneState(CutSceneState cutSceneState)
     {
-        if (GameManager.Instance == null)
-        {
-            Debug.Log("OnDisable(): GameManager.Instance is null");
-            return;
-        }
-
-        GameManager.Instance.OnGameOverTimeout -= OnGameOverTimeout;
-        GameManager.Instance.OnGameOverByPuppy -= OnGameOverByPuppy;
-        GameManager.Instance.OnGameWin -= OnGameWin;
+        state = cutSceneState;
+        Debug.Log($"SetCutSceneState({cutSceneState}) called! new state is {state}");
+        CutSceneStateMachine();
     }
 
     private void CutSceneStateMachine()
@@ -147,21 +167,6 @@ public class CutSceneManager : MonoBehaviour
                 UIManager.Instance.ShowAllUI();
                 break;
         }
-    }
-
-    private void SetCutSceneState(CutSceneState cutSceneState)
-    {
-        state = cutSceneState;
-        Debug.Log($"SetCutSceneState({cutSceneState}) called! new state is {state}");
-        CutSceneStateMachine();
-    }
-
-    /// <summary>
-    /// ÄÆ¾À ½ÃÀÛ!
-    /// </summary>
-    public void StartIntroCutScene()
-    {
-        SetCutSceneState(CutSceneState.Intro_Step1);
     }
 
     private IEnumerator WaitAndStartIntroStep2()

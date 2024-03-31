@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -30,13 +29,6 @@ public class HumanController : MonoBehaviour
         agent.updateUpAxis = false;
 
         animator = GetComponentInChildren<Animator>();
-    }
-
-    private void MoveHuman(Vector3 targetPos)
-    {
-        Debug.Log($"targetPos:{targetPos}");
-        agent.isStopped = false;
-        agent.SetDestination(targetPos);
     }
 
     public void Show()
@@ -76,6 +68,13 @@ public class HumanController : MonoBehaviour
     {
         onAllMovementsComplete = onComplete;
         moveCoroutine = StartCoroutine(MoveToPointSequentially(movePointsGameOver));
+    }
+
+    private void MoveHuman(Vector3 targetPos)
+    {
+        Debug.Log($"targetPos:{targetPos}");
+        agent.isStopped = false;
+        agent.SetDestination(targetPos);
     }
 
     private void SetAnimation(HumanAnimations animation)

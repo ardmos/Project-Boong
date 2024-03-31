@@ -32,18 +32,22 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    // Start is called before the first frame update
+    private void OnEnable()
+    {
+        // Add Callbacks
+        timerController.Phase1TimeEnded += TimerController_Phase1TimeEnded;
+        timerController.Phase2TimeEnded += TimerController_Phase2TimeEnded;
+        
+    }
+
     private void Start()
     {
         Debug.Log($"Game Manager Start");
 
-        // Add Callbacks
-        timerController.Phase1TimeEnded += TimerController_Phase1TimeEnded;
-        timerController.Phase2TimeEnded += TimerController_Phase2TimeEnded;
+        SetGameState(GameState.Intro);
+
         Player.Instance.OnExitPointReached += Player_OnExitPointReached;
         Player.Instance.OnCaughtByPuppy += Player_OnCaughtByPuppy;
-
-        SetGameState(GameState.Intro);
     }
 
     private void OnDisable()

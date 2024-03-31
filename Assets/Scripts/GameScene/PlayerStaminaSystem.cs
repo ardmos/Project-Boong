@@ -1,14 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStaminaSystem : MonoBehaviour
 {
-    private Coroutine staminaRecoveryCoroutine;
-
-    private float stamina;
-
     public StaminaUIController staminaUIController;
+
+    private Coroutine staminaRecoveryCoroutine;
+    private float stamina;
 
     private void Awake()
     {
@@ -23,6 +21,7 @@ public class PlayerStaminaSystem : MonoBehaviour
         Player.Instance.UpdatePlayerStamina(stamina);
         staminaUIController.SetUI(stamina);
     }
+
     private void RecoverStamina()
     {
         if (stamina + Player.DEFAULT_STAMINA_RECOVERY_AMOUNT > Player.DEFAULT_STAMINA_MAX)
