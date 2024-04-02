@@ -36,6 +36,8 @@ public class PuppyAI : MonoBehaviour
 
     public Transform startPosition;
 
+    public event EventHandler OnChasingStart;
+
     public float chaseSpeed = 10f;
     public float patrolSpeed = 3f;
     public Transform player;
@@ -147,6 +149,8 @@ public class PuppyAI : MonoBehaviour
         if (Vector3.Distance(transform.position, player.position) < chaseDistance)
         {
             SetPuppyState(PuppyState.Chase);
+            // Player, Audio에게 추격 시작을 알림(Audio는 아직 미구현)
+            OnChasingStart.Invoke(this, EventArgs.Empty);
         }
     }
 

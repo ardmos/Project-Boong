@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     private PlayerState playerState;
     private PlayerMovementSystem playerMovementSystem;
     private PlayerStaminaSystem playerStaminaSystem;
+    private PlayerEmotionSystem playerEmotionSystem;
     private GameInput gameInput;
     private SpriteRenderer spriteRenderer;
 
@@ -49,12 +50,16 @@ public class Player : MonoBehaviour
 
         playerMovementSystem = GetComponent<PlayerMovementSystem>();
         playerStaminaSystem = GetComponent<PlayerStaminaSystem>();
+        playerEmotionSystem = GetComponent<PlayerEmotionSystem>();
         gameInput = GetComponent<GameInput>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
     {
+        PuppyAI.Instance.OnChasingStart += Puppy_OnChasingStart;
+        GameManager.Instance.OnGameOverTimeout += OnGameOverTimeout;
+
         // Init Player Data
         playerData = new PlayerData(playerMovementSystem.GetMoveSpeed(), playerStaminaSystem.GetStamina());
     }
@@ -83,6 +88,14 @@ public class Player : MonoBehaviour
                 Debug.LogWarning("Door name does not match any enum value.");
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        if(PuppyAI.Instance == null || GameManager.Instance == null) return;
+
+        PuppyAI.Instance.OnChasingStart -= Puppy_OnChasingStart;
+        GameManager.Instance.OnGameOverTimeout -= OnGameOverTimeout;
     }
 
     private void OnDestroy()
@@ -127,6 +140,16 @@ public class Player : MonoBehaviour
     public void DisableControl()
     {
         gameInput.SetControllable(false);
+    }
+
+    private void Puppy_OnChasingStart(object sender, EventArgs e)
+    {
+        playerEmotionSystem.CreateEmotionBubble(PlayerEmotions.Shock);
+    }
+
+    private void OnGameOverTimeout(object sender, EventArgs e)
+    {
+        playerEmotionSystem.CreateEmotionBubble(PlayerEmotions.GameOver);
     }
 
     private void PlayerStateMachine()
