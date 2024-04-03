@@ -83,16 +83,16 @@ public class PlayerMovementSystem : MonoBehaviour
         // 이동시마다 스태미너 감소 
         Player.Instance.ReduceStamina();
         // Player state 변경
-        Player.Instance.SetPlayerState(PlayerState.Moving);
+        Player.Instance.SetPlayerState(PlayerBehaviourState.Moving);
     }
 
     private IEnumerator ChangePlayerStateToRestingOverTime()
     {
         // 기본 Player state 
-        Player.Instance.SetPlayerState(PlayerState.Idle);
+        Player.Instance.SetPlayerState(PlayerBehaviourState.Idle);
         yield return new WaitForSeconds(Player.DEFAULT_RESTING_TIME_REQUIRED);
         // 휴식 상태
-        Player.Instance.SetPlayerState(PlayerState.Resting);
+        Player.Instance.SetPlayerState(PlayerBehaviourState.Resting);
     }
 
     private IEnumerator MoveSmoothly(Vector3 tartgetPosition)

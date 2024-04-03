@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-public enum PuppyState
+public enum PuppyBehaviourState
 {
     Idle,
     Patrol,
     Chase
 }
 
-public enum CharacterAnimations
+public enum PuppyAnimationState
 {
     Idle,
     Running,
@@ -22,7 +22,7 @@ public class PuppyAI : MonoBehaviour
 {
     public static PuppyAI Instance { get; private set; }
 
-    public PuppyState currentState;
+    public PuppyBehaviourState currentState;
 
     // 동적으로 업데이트될 현재 접근 가능한 포인트들. 새로운 방 문이 열릴 때마다 영역이 추가됩니다.
     public List<Transform> availablePatrolPoints;
@@ -64,11 +64,11 @@ public class PuppyAI : MonoBehaviour
     private void Start()
     {
         // Add Callbacks
-        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_Kitchen, OnDoorEvent);
-        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_BedRoom, OnDoorEvent);
-        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_BathRoom, OnDoorEvent);
-        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_WorkoutRoom, OnDoorEvent);
-        DoorManager.Instance.SubscribeToDoorEvent(DoorNames.Door_Garage, OnDoorEvent);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorName.Door_Kitchen, OnDoorEvent);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorName.Door_BedRoom, OnDoorEvent);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorName.Door_BathRoom, OnDoorEvent);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorName.Door_WorkoutRoom, OnDoorEvent);
+        DoorManager.Instance.SubscribeToDoorEvent(DoorName.Door_Garage, OnDoorEvent);
     }
 
     private void Update()
@@ -84,14 +84,14 @@ public class PuppyAI : MonoBehaviour
             return;
         }
         // Unregister Callbacks
-        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_Kitchen, OnDoorEvent);
-        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_BedRoom, OnDoorEvent);
-        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_BathRoom, OnDoorEvent);
-        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_WorkoutRoom, OnDoorEvent);
-        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorNames.Door_Garage, OnDoorEvent);
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorName.Door_Kitchen, OnDoorEvent);
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorName.Door_BedRoom, OnDoorEvent);
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorName.Door_BathRoom, OnDoorEvent);
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorName.Door_WorkoutRoom, OnDoorEvent);
+        DoorManager.Instance.UnsubscribeFromDoorEvent(DoorName.Door_Garage, OnDoorEvent);
     }
 
-    public void SetPuppyState(PuppyState state)
+    public void SetPuppyState(PuppyBehaviourState state)
     {
         currentState = state;
     }
@@ -104,20 +104,20 @@ public class PuppyAI : MonoBehaviour
         agent.enabled = false;
         transform.position = startPosition.position;
         agent.enabled = true;
-        SetPuppyState(PuppyState.Idle);
+        SetPuppyState(PuppyBehaviourState.Idle);
     }
 
     private void PuppyStateMachine()
     {
         switch (currentState)
         {
-            case PuppyState.Idle:
+            case PuppyBehaviourState.Idle:
                 Idle();
                 break;
-            case PuppyState.Patrol:
+            case PuppyBehaviourState.Patrol:
                 Patrol();
                 break;
-            case PuppyState.Chase:
+            case PuppyBehaviourState.Chase:
                 Chase();
                 break;
         }
@@ -125,30 +125,30 @@ public class PuppyAI : MonoBehaviour
 
     private void Idle()
     {
-        // Set animation
-        SetAnimation(CharacterAnimations.Idle);
+        // 애니메이션 실행
+        SetAnimation(PuppyAnimationState.Idle);
     }
 
     private void Patrol()
     {
-        // Set animation
-        SetAnimation(CharacterAnimations.Running);
+        // 애니메이션 실행
+        SetAnimation(PuppyAnimationState.Running);
 
         agent.speed = patrolSpeed;
-        // Move towards the current patrol point
+        // 패트롤 지점으로 이동
         MovePuppy(availablePatrolPoints[currentPatrolIndex].position);
 
-        // Check if reached the patrol point
+        // 패트롤 지점 도착 여부 확인
         if (Vector3.Distance(transform.position, availablePatrolPoints[currentPatrolIndex].position) < 0.1f)
         {
-            // Move to the next patrol point            
+            // 도착시 다음 패트롤 지점을 변경
             currentPatrolIndex = Random.Range(0, availablePatrolPoints.Count);
         }
 
-        // Check if the player is within chase distance
+        // chaseDistance 내에 Player가 있는지 확인
         if (Vector3.Distance(transform.position, player.position) < chaseDistance)
         {
-            SetPuppyState(PuppyState.Chase);
+            SetPuppyState(PuppyBehaviourState.Chase);
             // Player, Audio에게 추격 시작을 알림(Audio는 아직 미구현)
             OnChasingStart.Invoke(this, EventArgs.Empty);
         }
@@ -156,17 +156,17 @@ public class PuppyAI : MonoBehaviour
 
     private void Chase()
     {
-        // Set animation
-        SetAnimation(CharacterAnimations.Running);
+        // 애니메이션 실행
+        SetAnimation(PuppyAnimationState.Running);
 
         agent.speed = chaseSpeed;
-        // Move towards the player
+        // Player에게 이동
         MovePuppy(player.position);
 
         // Check if the player is out of chase distance
         if (Vector3.Distance(transform.position, player.position) > chaseDistance)
         {
-            SetPuppyState(PuppyState.Patrol);
+            SetPuppyState(PuppyBehaviourState.Patrol);
         }
     }
 
@@ -176,13 +176,13 @@ public class PuppyAI : MonoBehaviour
         agent.SetDestination(targetPos);
     }
 
-    private void SetAnimation(CharacterAnimations animation)
+    private void SetAnimation(PuppyAnimationState animation)
     {
         if (animator.GetBool(animation.ToString())) return;
 
-        for (int i = (int)CharacterAnimations.Idle; i <= (int)CharacterAnimations.Eating; i++)
+        for (int i = (int)PuppyAnimationState.Idle; i <= (int)PuppyAnimationState.Eating; i++)
         {
-            animator.SetBool($"{((CharacterAnimations)i).ToString()}", false);
+            animator.SetBool($"{((PuppyAnimationState)i).ToString()}", false);
         }
 
         animator.SetBool(animation.ToString(), true);
@@ -199,19 +199,19 @@ public class PuppyAI : MonoBehaviour
                 // 문이 열렸을 때의 처리
                 switch (e.DoorName)
                 {
-                    case DoorNames.Door_Kitchen:
+                    case DoorName.Door_Kitchen:
                         availablePatrolPoints.AddRange(patrolPointsKitchen);
                         break;
-                    case DoorNames.Door_BedRoom:
+                    case DoorName.Door_BedRoom:
                         availablePatrolPoints.AddRange(patrolPointsBedRoom);
                         break;
-                    case DoorNames.Door_BathRoom:
+                    case DoorName.Door_BathRoom:
                         availablePatrolPoints.AddRange(patrolPointsBathRoom);
                         break;
-                    case DoorNames.Door_WorkoutRoom:
+                    case DoorName.Door_WorkoutRoom:
                         availablePatrolPoints.AddRange(patrolPointsWorkoutRoom);
                         break;
-                    case DoorNames.Door_Garage:
+                    case DoorName.Door_Garage:
                         availablePatrolPoints.AddRange(patrolPointsGarage);
                         break;
                 }
@@ -221,19 +221,19 @@ public class PuppyAI : MonoBehaviour
                 // 문이 닫혔을 때의 처리
                 switch (e.DoorName)
                 {
-                    case DoorNames.Door_Kitchen:
+                    case DoorName.Door_Kitchen:
                         availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsKitchen, p => p == point));
                         break;
-                    case DoorNames.Door_BedRoom:
+                    case DoorName.Door_BedRoom:
                         availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsBedRoom, p => p == point));
                         break;
-                    case DoorNames.Door_BathRoom:
+                    case DoorName.Door_BathRoom:
                         availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsBathRoom, p => p == point));
                         break;
-                    case DoorNames.Door_WorkoutRoom:
+                    case DoorName.Door_WorkoutRoom:
                         availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsWorkoutRoom, p => p == point));
                         break;
-                    case DoorNames.Door_Garage:
+                    case DoorName.Door_Garage:
                         availablePatrolPoints.RemoveAll(point => Array.Exists(patrolPointsGarage, p => p == point));
                         break;
                 }

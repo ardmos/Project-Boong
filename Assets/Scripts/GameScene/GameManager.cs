@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Phase 1!");
         timerController.StartTimer();
-        PuppyAI.Instance.SetPuppyState(PuppyState.Patrol);
+        PuppyAI.Instance.SetPuppyState(PuppyBehaviourState.Patrol);
     }
 
     /// <summary>

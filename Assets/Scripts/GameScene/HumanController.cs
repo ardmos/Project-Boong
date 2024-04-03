@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
-public enum HumanAnimations
+public enum HumanAnimationState
 {
     Idle,
     Walking
@@ -49,7 +49,7 @@ public class HumanController : MonoBehaviour
         StopCoroutine(moveCoroutine);
         agent.isStopped = true;
         transform.position = startPosition.position;
-        SetAnimation(HumanAnimations.Idle);
+        SetAnimation(HumanAnimationState.Idle);
     }
 
     public void MoveToMovePointsIntroStep3(UnityAction onComplete)
@@ -77,11 +77,11 @@ public class HumanController : MonoBehaviour
         agent.SetDestination(targetPos);
     }
 
-    private void SetAnimation(HumanAnimations animation)
+    private void SetAnimation(HumanAnimationState animation)
     {
-        for (int i = (int)HumanAnimations.Idle; i <= (int)HumanAnimations.Walking; i++)
+        for (int i = (int)HumanAnimationState.Idle; i <= (int)HumanAnimationState.Walking; i++)
         {
-            animator.SetBool($"{((HumanAnimations)i).ToString()}", false);
+            animator.SetBool($"{((HumanAnimationState)i).ToString()}", false);
         }
         animator.SetBool(animation.ToString(), true);
     }
@@ -92,13 +92,13 @@ public class HumanController : MonoBehaviour
         {
             MoveHuman(point.position);
             //agent.SetDestination(point.position);
-            SetAnimation(HumanAnimations.Walking);
+            SetAnimation(HumanAnimationState.Walking);
             // agent가 목적지를 계산하고 이동을 시작하기까지 잠시 기다려줍니다. 이 과정을 거치지 않으면 remainingDistance 계산이 올바로 되지 않습니다. 
             yield return new WaitForSeconds(1f);
             Debug.Log($"Human move start! movePoint: {point.gameObject.name}, remainingDistance: {agent.remainingDistance}");
             yield return new WaitUntil(() => agent.remainingDistance < 0.1f);
             Debug.Log($"Human move end! movePoint: {point.gameObject.name}, remainingDistance: {agent.remainingDistance}");
-            SetAnimation(HumanAnimations.Idle);
+            SetAnimation(HumanAnimationState.Idle);
         }
 
         Debug.Log("MoveComplete!");

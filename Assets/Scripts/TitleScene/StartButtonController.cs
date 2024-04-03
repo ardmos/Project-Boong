@@ -4,7 +4,12 @@ using UnityEngine.UI;
 
 public class StartButtonController : MonoBehaviour
 {
-    public Button buttonStart;
+    private Button buttonStart;
+
+    private void Awake()
+    {
+        buttonStart = GetComponent<Button>();
+    }
 
     private void OnEnable()
     {

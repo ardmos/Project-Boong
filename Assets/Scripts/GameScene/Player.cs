@@ -13,7 +13,7 @@ public struct PlayerData
     }
 }
 
-public enum PlayerState
+public enum PlayerBehaviourState
 {
     Idle,
     Moving,
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     public Transform playerStartPoint; 
 
     private PlayerData playerData;
-    private PlayerState playerState;
+    private PlayerBehaviourState playerState;
     private PlayerMovementSystem playerMovementSystem;
     private PlayerStaminaSystem playerStaminaSystem;
     private PlayerEmotionSystem playerEmotionSystem;
@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
 
         if (collision.CompareTag("Door"))
         {
-            DoorNames doorName;
+            DoorName doorName;
             if (Enum.TryParse(collision.name, out doorName))
             {
                 DoorManager.Instance.OpenDoor(doorName);
@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
     {
         spriteRenderer.enabled = false;
         transform.position = playerStartPoint.position;
-        SetPlayerState(PlayerState.Idle);
+        SetPlayerState(PlayerBehaviourState.Idle);
     }
 
     public PlayerData GetPlayerData()
@@ -130,7 +130,7 @@ public class Player : MonoBehaviour
         playerStaminaSystem.ReduceStamina();
     }
 
-    public void SetPlayerState(PlayerState playerState)
+    public void SetPlayerState(PlayerBehaviourState playerState)
     {
         this.playerState = playerState;
 
@@ -156,13 +156,13 @@ public class Player : MonoBehaviour
     {
         switch (playerState)
         {
-            case PlayerState.Idle:
+            case PlayerBehaviourState.Idle:
                 break;
-            case PlayerState.Moving:
+            case PlayerBehaviourState.Moving:
                 // 스태미너 회복 중지
                 playerStaminaSystem.StopStaminaRecovery();
                 break;
-            case PlayerState.Resting:
+            case PlayerBehaviourState.Resting:
                 // 스태미너 회복 시작
                 playerStaminaSystem.StartStaminaRecovery();
                 break;
