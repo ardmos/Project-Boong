@@ -34,6 +34,8 @@ public class CutSceneManager : MonoBehaviour
 
     private void Start()
     {
+        if (GameManager.Instance == null) return;
+
         GameManager.Instance.OnGameOverTimeout += OnGameOverTimeout;
         GameManager.Instance.OnGameOverByPuppy += OnGameOverByPuppy;
         GameManager.Instance.OnGameWin += OnGameWin;
@@ -41,11 +43,7 @@ public class CutSceneManager : MonoBehaviour
 
     private void OnDisable()
     {
-        if (GameManager.Instance == null)
-        {
-            Debug.Log("OnDisable(): GameManager.Instance is null");
-            return;
-        }
+        if (GameManager.Instance == null) return;
 
         GameManager.Instance.OnGameOverTimeout -= OnGameOverTimeout;
         GameManager.Instance.OnGameOverByPuppy -= OnGameOverByPuppy;

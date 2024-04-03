@@ -33,7 +33,7 @@ public class DoorController : MonoBehaviour
         // 4. NavMesh 지나가지 못하는 영역에서 제거 
         navMeshModifier.area = 0;
         // 5. NavMesh rebake
-        NavMeshManager.Instance.ReBake();
+        NavMeshManager.Instance?.ReBake();
     }
 
     public void OnDoorClosed()
@@ -49,6 +49,6 @@ public class DoorController : MonoBehaviour
         // 4. NavMesh에 지나가지 못하는 영역으로 추가
         navMeshModifier.area = 1;
         // 5. NavMesh rebake
-        NavMeshManager.Instance.ReBake();
+        NavMeshManager.Instance?.ReBake();
     }
 }

@@ -36,16 +36,14 @@ public class GameManager : MonoBehaviour
     {
         // Add Callbacks
         timerController.Phase1TimeEnded += TimerController_Phase1TimeEnded;
-        timerController.Phase2TimeEnded += TimerController_Phase2TimeEnded;
-        
+        timerController.Phase2TimeEnded += TimerController_Phase2TimeEnded;      
     }
 
     private void Start()
     {
-        Debug.Log($"Game Manager Start");
-
         SetGameState(GameState.Intro);
 
+        if (Player.Instance == null) return;
         Player.Instance.OnExitPointReached += Player_OnExitPointReached;
         Player.Instance.OnCaughtByPuppy += Player_OnCaughtByPuppy;
     }
@@ -56,11 +54,7 @@ public class GameManager : MonoBehaviour
         timerController.Phase1TimeEnded -= TimerController_Phase1TimeEnded;
         timerController.Phase2TimeEnded -= TimerController_Phase2TimeEnded;
 
-        if (Player.Instance == null)
-        {
-            Debug.Log("OnDisable(): Player.Instance is null");
-            return;
-        }
+        if (Player.Instance == null) return;
         Player.Instance.OnExitPointReached -= Player_OnExitPointReached;
         Player.Instance.OnCaughtByPuppy -= Player_OnCaughtByPuppy;
     }
@@ -153,12 +147,12 @@ public class GameManager : MonoBehaviour
 
     private void ResetPlayer()
     {
-        Player.Instance.ResetPlayer();
+        Player.Instance?.ResetPlayer();
     }
 
     private void ResetDoors()
     {
-        DoorManager.Instance.CloseAllDoors();
+        DoorManager.Instance?.CloseAllDoors();
     }
 
     /// <summary>

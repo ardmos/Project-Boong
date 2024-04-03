@@ -1,4 +1,4 @@
-using DG.Tweening;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class DialogController : MonoBehaviour
 {
+    public const float DEFAULT_TYPING_LETTER_INTERVAL = 0.1f;
+
     public TextMeshProUGUI text;
     public Button buttonNext;
     public GameObject iconNext;
@@ -25,9 +27,7 @@ public class DialogController : MonoBehaviour
 
     public void SetMessage(string message)
     {
-        // DOTween을 사용하여 TextMeshPro에 글자를 출력하는 애니메이션을 보여줍니다.
-        text.DOText(message, 1f)
-            .OnComplete(() => OnTextAnimationComplete()); // 애니메이션이 종료될 때 호출할 콜백 메서드를 설정합니다.    
+        StartCoroutine(TypeSentence(message, OnTextAnimationComplete));
         buttonNext.gameObject.SetActive(false);
         iconNext.SetActive(false);
     }
@@ -43,10 +43,33 @@ public class DialogController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // 효과음을 재생하는 메서드
+    private void PlayTypingSound()
+    {
+        DialogSoundManager.Instance?.PlayTypingSound();
+    }
+
     // 텍스트 애니메이션이 종료될 때 호출되는 콜백 메서드
     private void OnTextAnimationComplete()
     {
         buttonNext.gameObject.SetActive(true);
         iconNext.SetActive(true);
+    }
+
+    // 한 글자씩 찍어주는 애니메이션을 구현하는 메서드
+    private IEnumerator TypeSentence(string message, UnityAction callback)
+    {
+        text.text = "";
+        foreach (char letter in message.ToCharArray())
+        {
+            text.text += letter;
+
+            // 공백은 소리를 내지 않습니다
+            if (letter != System.Convert.ToChar(32)) PlayTypingSound();
+
+            yield return new WaitForSeconds(DEFAULT_TYPING_LETTER_INTERVAL);
+        }
+
+        callback?.Invoke();
     }
 }

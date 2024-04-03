@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
             DoorName doorName;
             if (Enum.TryParse(collision.name, out doorName))
             {
-                DoorManager.Instance.OpenDoor(doorName);
+                DoorManager.Instance?.OpenDoor(doorName);
             }
             else
             {

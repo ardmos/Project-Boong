@@ -63,6 +63,8 @@ public class PuppyAI : MonoBehaviour
 
     private void Start()
     {
+        if (DoorManager.Instance == null) return;
+
         // Add Callbacks
         DoorManager.Instance.SubscribeToDoorEvent(DoorName.Door_Kitchen, OnDoorEvent);
         DoorManager.Instance.SubscribeToDoorEvent(DoorName.Door_BedRoom, OnDoorEvent);
@@ -78,11 +80,8 @@ public class PuppyAI : MonoBehaviour
 
     private void OnDisable()
     {
-        if (DoorManager.Instance == null)
-        {
-            Debug.Log("OnDisable(): DoorManager.Instance is null");
-            return;
-        }
+        if (DoorManager.Instance == null) return;
+
         // Unregister Callbacks
         DoorManager.Instance.UnsubscribeFromDoorEvent(DoorName.Door_Kitchen, OnDoorEvent);
         DoorManager.Instance.UnsubscribeFromDoorEvent(DoorName.Door_BedRoom, OnDoorEvent);
