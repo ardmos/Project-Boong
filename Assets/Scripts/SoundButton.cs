@@ -12,9 +12,8 @@ public class SoundButton : Button
 
     private void PlayClickSound()
     {
-        UIButtonSoundManager uISoundManager = FindObjectOfType<UIButtonSoundManager>();
-        if (uISoundManager == null) return;
+        if (UIButtonSoundManager.Instance == null) return;
 
-        uISoundManager.PlayButtonClickSound(soundButtonType);
+        UIButtonSoundManager.Instance.PlayButtonClickSound(soundButtonType);
     }
 }

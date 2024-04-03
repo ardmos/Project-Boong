@@ -27,7 +27,7 @@ public class DialogController : MonoBehaviour
 
     public void SetMessage(string message)
     {
-        StartCoroutine(TypeSentence(message, OnTextAnimationComplete));
+        StartCoroutine(TypeSentenceWithSound(message, OnTextAnimationComplete));
         buttonNext.gameObject.SetActive(false);
         iconNext.SetActive(false);
     }
@@ -57,7 +57,7 @@ public class DialogController : MonoBehaviour
     }
 
     // 한 글자씩 찍어주는 애니메이션을 구현하는 메서드
-    private IEnumerator TypeSentence(string message, UnityAction callback)
+    private IEnumerator TypeSentenceWithSound(string message, UnityAction callback)
     {
         text.text = "";
         foreach (char letter in message.ToCharArray())

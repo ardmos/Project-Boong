@@ -9,14 +9,17 @@ public enum SoundButtonType
 
 public class UIButtonSoundManager : MonoBehaviour
 {
+    public static UIButtonSoundManager Instance { get; private set; }
+
     public AudioClip[] buttonSoundClips;
 
     private AudioSource audioSource;
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        Instance = this;
         DontDestroyOnLoad(gameObject);
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayButtonClickSound(SoundButtonType soundButtonType)
