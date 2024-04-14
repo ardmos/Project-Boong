@@ -10,7 +10,9 @@ public class PlayerStaminaSystem : MonoBehaviour
 
     private void Awake()
     {
+        // 스테미너 초기화
         stamina = Player.DEFAULT_STAMINA_MAX;
+        staminaUIController.SetUI(stamina);
     }
 
     public void ReduceStamina()
