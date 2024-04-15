@@ -23,7 +23,7 @@ public enum PlayerBehaviourState
 public class Player : MonoBehaviour
 {
     public const float DEFAULT_STAMINA_MAX = 100f;
-    public const float DEFAULT_MOVESPEED = 100f;
+    public const float DEFAULT_MOVESPEED = 200f;
     public const float DEFAULT_STAMINA_CONSUMPTION = 5f;
     public const float DEFAULT_STAMINA_RECOVERY_AMOUNT = 20f;
     public const float DEFAULT_STAMINA_RECOVERY_INTERVAL = 1f;
