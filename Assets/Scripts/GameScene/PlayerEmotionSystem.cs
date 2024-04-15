@@ -3,6 +3,7 @@ using UnityEngine;
 public enum PlayerEmotions
 {
     Win,    // 탈출구역 접근시
+    Exhausted,
     Shock,
     GameOver,   // 게임오버 됐을 때. 타임아웃&잡힘
     Happy

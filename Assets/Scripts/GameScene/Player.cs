@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         PuppyAI.Instance.OnChasingStart += Puppy_OnChasingStart;
+        playerStaminaSystem.OnLowStamina += OnLowStamina;
         GameManager.Instance.OnGameOverTimeout += OnGameOverTimeout;
 
         // Init Player Data
@@ -95,6 +96,7 @@ public class Player : MonoBehaviour
         if(PuppyAI.Instance == null || GameManager.Instance == null) return;
 
         PuppyAI.Instance.OnChasingStart -= Puppy_OnChasingStart;
+        playerStaminaSystem.OnLowStamina -= OnLowStamina;
         GameManager.Instance.OnGameOverTimeout -= OnGameOverTimeout;
     }
 
@@ -145,6 +147,11 @@ public class Player : MonoBehaviour
     private void Puppy_OnChasingStart(object sender, EventArgs e)
     {
         playerEmotionSystem.CreateEmotionBubble(PlayerEmotions.Shock);
+    }
+
+    private void OnLowStamina(object sender, EventArgs e)
+    {
+        playerEmotionSystem.CreateEmotionBubble(PlayerEmotions.Exhausted);
     }
 
     private void OnGameOverTimeout(object sender, EventArgs e)

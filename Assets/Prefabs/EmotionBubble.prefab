@@ -278,6 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconEmotionSprites:
   - {fileID: 21300000, guid: 5754a025768227447925816901bcba4e, type: 3}
+  - {fileID: 21300000, guid: ce0bc60365919be4eb81e53d5a066401, type: 3}
   - {fileID: 21300000, guid: e66c1e01da0acb84b8a3a77425416245, type: 3}
   - {fileID: 21300000, guid: ce0bc60365919be4eb81e53d5a066401, type: 3}
   - {fileID: 21300000, guid: cfeb02331f9ac4248b535aa3574c68c5, type: 3}

@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class PlayerStaminaSystem : MonoBehaviour
 {
     public StaminaUIController staminaUIController;
+
+    public event EventHandler OnLowStamina;
 
     private Coroutine staminaRecoveryCoroutine;
     private float stamina;
@@ -19,6 +22,8 @@ public class PlayerStaminaSystem : MonoBehaviour
     {
         if (stamina < Player.DEFAULT_STAMINA_CONSUMPTION) stamina = 0f;
         else stamina -= Player.DEFAULT_STAMINA_CONSUMPTION;
+
+        if(stamina <= Player.DEFAULT_STAMINA_CONSUMPTION)   OnLowStamina.Invoke(this, EventArgs.Empty);
 
         Player.Instance.UpdatePlayerStamina(stamina);
         staminaUIController.SetUI(stamina);
