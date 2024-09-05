@@ -1,6 +1,6 @@
 # 2D술래잡기 게임 프로젝트 - 아빠 붕어빵의 위기
 
-![게임 로고 이미지]
+![image](https://github.com/user-attachments/assets/d1303926-1ad8-4439-a2fc-3d875beafe54)
 
 ## 프로젝트 개요
 
