@@ -41,6 +41,6 @@
 
 프로젝트 관리자 - elis109777@gmail.com
 
-## 이미지
+## 노션
 
-https://sly-charger-b36.notion.site/5d9077e483ed4165b244654893f7bfa9?pvs=74
+https://sly-charger-b36.notion.site/Wizards-And-Knights-3D-73bc605a10204b95ad7e8381379b2085?pvs=74
